@@ -21,13 +21,12 @@ const NAV_ITEMS = {
       icon: <SideNavIcons name="material" />,
       url: "/refuerzo",
     },
-    // {
-    //   title: "Community",
-    //   icon: (
-    //     <SideNavIcons name='community' />
-    //   ),
-    //   url: "",
-    // },
+    {
+      id: 6,
+      title: "My Community",
+      icon: <SideNavIcons name="community" />,
+      url: "/community",
+    },
     // {
     //   title: "Matches",
     //   icon: (
@@ -41,6 +40,12 @@ const NAV_ITEMS = {
       icon: <SideNavIcons name="profile" />,
       url: "/profile",
     },
+    {
+      id:4,
+      title: 'Calendar',
+      icon: <SideNavIcons name='videocall' />,
+      url: '/calendar'
+    }
   ],
   professor: [
     {
@@ -78,6 +83,12 @@ const NAV_ITEMS = {
       title: "Progress",
       icon: <SideNavIcons name="progress" />,
       url: "/progress",
+    },
+    {
+      id: 6,
+      title: "My Community",
+      icon: <SideNavIcons name="community" />,
+      url: "/community",
     },
   ],
 };

@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 
 import getAllCoursesByUser from "services/getAllCoursesByUser";
 import DashboardIcons from "components/DashboardIcons";
+import { API_KEY } from "services/settings";
 
 const getContinueWatching = (courses) => {
   if (courses.lenght > 1) {
@@ -20,7 +21,7 @@ const getContinueWatching = (courses) => {
           return {
             nombre: material.nombre,
             thumbnail: material.thumbnails,
-            url: `/courses/${courseId}/module/${moduleId}/material/${material.id}`,
+            url: `/courses/${courseId}/module/${moduleId}/material/${material.id}/${API_KEY}`,
           };
         }
       }

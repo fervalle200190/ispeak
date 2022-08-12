@@ -1,4 +1,4 @@
-import { API_URL } from "./settings";
+import { API_KEY, API_URL } from "./settings";
 
 export default function getMaterialById({ id }) {
   const URL = `${API_URL}/MaterialEstudios/GetById/${id}`;

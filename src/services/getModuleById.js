@@ -1,4 +1,4 @@
-import { API_URL } from "./settings";
+import { API_KEY, API_URL } from "./settings";
 
 export default function getModuleById(id) {
   const URL = `${API_URL}/Modulos/GetById/${id}`;

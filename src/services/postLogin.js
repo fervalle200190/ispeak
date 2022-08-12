@@ -1,7 +1,7 @@
-import { API_URL } from "./settings";
+import { API_KEY, API_URL } from "./settings";
 
 export default function postLogin({ email, password }) {
-  const URL = `${API_URL}/User/Login`;
+  const URL = `${API_URL}/User/Login/${API_KEY}`;
 
   const credentials = {
     email: email,

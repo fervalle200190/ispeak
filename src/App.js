@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route } from "wouter";
 
 import LoginPage from "pages/Login";
@@ -9,10 +9,13 @@ import MaterialPage from "./pages/Material";
 import AdditionalMaterialPage from "./pages/AdditionalMaterial";
 import ProfilePage from "pages/Profile";
 import StudentsPage from "pages/Students";
+import {MyCommunityPage} from "pages/MyCommunity";
+import MyTopicPage from "pages/MyTopic";
 import ProfessorCoursesPage from "pages/ProfessorCourses";
 import AssistancePage from "pages/Assistance";
 import FollowUpPage from "pages/FollowUp";
 import ProgressPage from "pages/Progress";
+import CalendarPage from "pages/Calendar";
 import ExternalRegisterPage from "pages/ExternalRegister";
 
 import SideBar from "./components/SideBar";
@@ -22,6 +25,8 @@ import "./App.css";
 import { SideBarContext } from "context/sideBarContext";
 import { CoursesContext } from "context/coursesContext";
 import getAllCoursesByUser from "services/getAllCoursesByUser";
+import JitsiMeetPage from "pages/JitsiMeet";
+import { SizeContext } from "context/SizeContext";
 
 const RenderProfessorView = () => {
   const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -36,6 +41,10 @@ const RenderProfessorView = () => {
         <Route component={AssistancePage} path="/assistance" />
         <Route component={FollowUpPage} path="/followup" />
         <Route component={ProgressPage} path="/progress" />
+        <Route component={MyCommunityPage} path="/community" /> 
+        <Route component={MyTopicPage} path="/community/:topicId" />
+        <Route component={JitsiMeetPage} path="/JitsiMeet/:jitsiId" />  
+         
       </main>
     </div>
   );
@@ -44,6 +53,7 @@ const RenderProfessorView = () => {
 const RenderStudentView = () => {
   const USER = JSON.parse(window.localStorage.getItem("loggedAppUser"));
   const [courses, setCourses] = useState([]);
+  const {showBar} = useContext(SizeContext)
 
   useEffect(() => {
     getAllCoursesByUser(USER.id).then((response) => setCourses(response));
@@ -52,7 +62,7 @@ const RenderStudentView = () => {
   return (
     <>
       <CoursesContext.Provider value={courses}>
-        <div className="App flex flex-col items-center md:ml-60">
+        <div className={`App flex flex-col items-center tranisition-all ${showBar? "md:ml-60": "md:ml-10"}`}>
           <SideBar />
           <Header user={USER} />
           <main className="w-full">
@@ -65,6 +75,10 @@ const RenderStudentView = () => {
             />
             <Route component={AdditionalMaterialPage} path="/refuerzo" />
             <Route component={ProfilePage} path="/profile" />
+            <Route component={CalendarPage} path="/calendar" />
+            <Route component={MyCommunityPage} path="/community" />
+            <Route component={MyTopicPage} path="/community/:topicId" />
+            <Route component={JitsiMeetPage} path="/JitsiMeet/:jitsiId" />
           </main>
         </div>
       </CoursesContext.Provider>
@@ -87,7 +101,7 @@ function App() {
   return (
     <>
       {!user ? (
-        <>
+        <> 
           <Route component={LoginPage} path="/" />
           <Route component={ExternalRegisterPage} path="/register/:courseid" />
         </>

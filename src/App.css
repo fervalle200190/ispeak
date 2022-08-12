@@ -2,3 +2,69 @@ body {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
+
+.main-logo {
+  width: 210px;
+}
+
+.no-m svg {
+  margin-right: 0 !important;
+}
+
+.icon-container ion-icon {
+  color: #fff;
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.icon-box-container ion-icon {
+  color: #fff;
+  position: relative;
+  right: 2px;
+  font-size: 12px;
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.rotate-arrow ion-icon {
+  transform: rotate(0deg);
+}
+
+.icon-box-container {
+  cursor: pointer;
+  clip-path: polygon(0 0, 25% 27%, 25% 76%, 0% 100%);
+  top: 50%;
+  right: 0;
+  transform: translate(90%,-50%);
+  opacity: 0;
+  background: #1e3a8a;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.icon-box-container:hover {
+  transform: translate(100%,-50%);
+  opacity: 1;
+}
+
+.relative:hover .icon-box-container {
+  transform: translate(100%,-50%);
+  opacity: 1;
+}
+
+.op-scroll::-webkit-scrollbar-track {
+  background: #1e3b8a31 !important;
+}
+
+.op-scroll::-webkit-scrollbar-thumb {
+  background: #d1d5db31 !important;
+}
+
+.op-scroll:hover::-webkit-scrollbar-track {
+  background: #1e3a8a !important;
+}
+
+.op-scroll:hover::-webkit-scrollbar-thumb {
+  background: #d1d5db !important;
+}

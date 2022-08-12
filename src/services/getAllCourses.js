@@ -1,7 +1,7 @@
-import { API_URL } from "services/settings"
+import { API_KEY, API_URL } from "services/settings"
 
 export default function getAllCourses() {
-    const URL = `${API_URL}/Cursos/GetAll`
+    const URL = `${API_URL}/Cursos/GetAll/${API_KEY}`
     return fetch(URL)
         .then(response => response.json())
         .then(response => {
