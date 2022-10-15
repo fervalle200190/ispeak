@@ -7,6 +7,7 @@ export default function CourseCard({
   duration,
   professor,
   progress,
+  url
 }) {
   if (progress > 100) {
     progress = 100;
@@ -14,10 +15,10 @@ export default function CourseCard({
 
   return (
     <Link
-      href={`/courses/${id}`}
+      href={`/${url}/${id}`}
       className="flex w-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm transition delay-[50ms] ease-in-out hover:scale-[1.01] hover:shadow-md md:w-64"
     >
-      <div className="py-5 px-2">
+      <div className="py-5 px-2 show-card-fadeIn">
         <div className="bg-primary/30 h-5 w-full rounded-xl">
           <div
             className="bg-primary flex h-full min-w-fit items-center rounded-xl px-2 text-right text-gray-50"

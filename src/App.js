@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Route } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 
 import LoginPage from "pages/Login";
 import DashboardPage from "./pages/Dashboard";
@@ -27,11 +27,16 @@ import { CoursesContext } from "context/coursesContext";
 import getAllCoursesByUser from "services/getAllCoursesByUser";
 import JitsiMeetPage from "pages/JitsiMeet";
 import { SizeContext } from "context/SizeContext";
+import { PreSignUp } from "pages/PreSignUp";
+import { PasswordPage } from "pages/Password";
+import { Navigate } from "react-router-dom";
 
 const RenderProfessorView = () => {
   const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
+  const {showBar} = useContext(SizeContext)
+
   return (
-    <div className="App flex flex-col items-center md:ml-60">
+    <div className={`App flex flex-col items-center ${showBar? "md:ml-60": "md:ml-10"}`}>
       <SideBar />
       <Header user={user} />
       <main className="w-full ">
@@ -56,7 +61,9 @@ const RenderStudentView = () => {
   const {showBar} = useContext(SizeContext)
 
   useEffect(() => {
-    getAllCoursesByUser(USER.id).then((response) => setCourses(response));
+    getAllCoursesByUser(USER.id).then((response) => {
+      setCourses(response)
+    });
   }, [USER.id]);
 
   return (
@@ -66,19 +73,37 @@ const RenderStudentView = () => {
           <SideBar />
           <Header user={USER} />
           <main className="w-full">
-            <Route component={DashboardPage} path="/" />
-            <Route component={CoursesPage} path="/courses" />
-            <Route component={CoursePage} path="/courses/:courseId" />
-            <Route
-              component={MaterialPage}
-              path="/courses/:courseId/module/:moduleId/material/:materialId"
-            />
-            <Route component={AdditionalMaterialPage} path="/refuerzo" />
-            <Route component={ProfilePage} path="/profile" />
-            <Route component={CalendarPage} path="/calendar" />
-            <Route component={MyCommunityPage} path="/community" />
-            <Route component={MyTopicPage} path="/community/:topicId" />
-            <Route component={JitsiMeetPage} path="/JitsiMeet/:jitsiId" />
+            <Switch>
+              <Route component={DashboardPage} path="/" />
+              <Route path="/courses">
+                  {(params)=> <CoursesPage url={"courses"} params={params} />}
+              </Route>
+              <Route path="/courses-paced">
+                  {(params)=> <CoursesPage url="courses-paced" params={params} />}
+              </Route>
+              <Route path="/courses/:courseId">
+                  {(params)=> <CoursePage url={"courses"} params={params} />}
+              </Route>
+              <Route path="/courses-paced/:courseId">
+                  {(params)=> <CoursePage url="courses-paced" params={params} />}
+              </Route>
+              <Route
+                path="/courses/:courseId/module/:moduleId/material/:materialId"
+              >
+                  {(params)=> <MaterialPage params={params} />}
+              </Route>
+              <Route
+                path="/courses-paced/:courseId/module/:moduleId/material/:materialId"
+              >
+                  {(params)=> <MaterialPage community={false} params={params} />}
+              </Route>
+              <Route component={AdditionalMaterialPage} path="/refuerzo" />
+              <Route component={ProfilePage} path="/profile" />
+              <Route component={CalendarPage} path="/calendar" />
+              <Route component={MyCommunityPage} path="/community" />
+              <Route component={MyTopicPage} path="/community/:topicId" />
+              <Route component={JitsiMeetPage} path="/JitsiMeet/:jitsiId" />
+            </Switch>
           </main>
         </div>
       </CoursesContext.Provider>
@@ -102,8 +127,12 @@ function App() {
     <>
       {!user ? (
         <> 
-          <Route component={LoginPage} path="/" />
-          <Route component={ExternalRegisterPage} path="/register/:courseid" />
+          <Switch>
+             <Route component={LoginPage} path="/" />
+             <Route component={PasswordPage} path="/password" />
+             <Route component={ExternalRegisterPage} path="/register/:paymentId" />
+             <Route component={PreSignUp} path='/pre-register/:planId/:countryId' />
+          </Switch>
         </>
       ) : (
         <SideBarContext.Provider value={{ isOpen, setIsOpen }}>

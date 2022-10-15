@@ -1,7 +1,7 @@
 import { API_KEY, API_URL, USER_ID } from "./settings";
 
 export default function getAdditionalMaterialByUser() {
-  const URL = `${API_URL}/MaterialRefuerzo/GetAllByAlumnoCurso/${USER_ID}/${API_KEY}`;
+  const URL = `${API_URL}/MaterialRefuerzo/GetAllByAlumnoCurso/${USER_ID}/${USER_ID}`;
 
   return fetch(URL)
     .then((response) => response.json())

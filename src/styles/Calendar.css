@@ -138,3 +138,18 @@
           display: block;
      }
 }
+
+.animate-up {
+     animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+     0%{
+          transform: translate(-50%,200%);
+          opacity: 0;
+     }
+     100%{
+          transform: translate(-50%,-50%);
+          opacity: 1;
+     }
+}

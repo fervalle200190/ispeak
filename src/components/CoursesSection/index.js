@@ -3,7 +3,7 @@ import { Link } from "wouter";
 
 import CoursesList from "components/CoursesList";
 
-export default function CourseListSection({ title, courses, link }) {
+export default function CourseListSection({ title, courses, link, url }) {
   return (
     <section className="flex w-full flex-col gap-5 p-5 md:p-10">
       {title ? (
@@ -21,7 +21,7 @@ export default function CourseListSection({ title, courses, link }) {
       ) : (
         <></>
       )}
-      <CoursesList courses={courses} />
+      <CoursesList courses={courses} url={url} />
     </section>
   );
 }

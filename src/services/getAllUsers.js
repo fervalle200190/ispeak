@@ -1,7 +1,7 @@
-import { API_URL } from "./settings";
+import { API_URL, USER_ID } from "./settings";
 
 export default function getAllUsers() {
-  const URL = `${API_URL}/Usuario/GetAll`;
+  const URL = `${API_URL}/Usuario/GetAll/${USER_ID}`;
   return fetch(URL)
     .then((response) => response.json())
     .then((response) => {

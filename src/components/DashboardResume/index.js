@@ -21,7 +21,7 @@ const getContinueWatching = (courses) => {
           return {
             nombre: material.nombre,
             thumbnail: material.thumbnails,
-            url: `/courses/${courseId}/module/${moduleId}/material/${material.id}/${API_KEY}`,
+            url: `/courses/${courseId}/module/${moduleId}/material/${material.id}/`,
           };
         }
       }

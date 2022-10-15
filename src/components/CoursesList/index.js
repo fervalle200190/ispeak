@@ -1,6 +1,7 @@
 import CourseCard from "components/CourseCard";
+import { v4 } from "uuid";
 
-export default function CourseList({ courses }) {
+export default function CourseList({ courses, url }) {
   return (
     <div className="flex flex-wrap gap-5">
       {courses.map(
@@ -14,8 +15,9 @@ export default function CourseList({ courses }) {
         }) => {
           return (
             <CourseCard
-              key={id}
+              key={v4()}
               id={id}
+              url={url}
               title={nombre}
               students={cantidadAlumnos}
               duration={duracion}

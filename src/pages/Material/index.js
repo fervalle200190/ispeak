@@ -15,6 +15,7 @@ import "./styles.css";
 import setMaterialComplete from "services/setMaterialComplete";
 import { SizeContext } from "context/SizeContext";
 import StudentsPage from "pages/MyTopic";
+import BubbleChat from "../../assets/burbuja-chat.svg";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -238,9 +239,10 @@ function MaterialCommentsSection({ courseId, materialId, isActive = false }) {
      );
 }
 
-export default function MaterialPage({ params }) {
+export default function MaterialPage({ params, community = true }) {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
-     const { secondBar } = useContext(SizeContext);
+     const { secondBar, showBar, setShowBar, setSecondBar, handleSecondBar } =
+          useContext(SizeContext);
      const { size } = useContext(SizeContext);
      const { courseId, moduleId, materialId } = params;
      const [course, setCourse] = useState({});
@@ -253,12 +255,28 @@ export default function MaterialPage({ params }) {
      const [location, setLocation] = useLocation();
 
      useEffect(() => {
-          getCourseById({ id: courseId }).then((course) => setCourse(course));
+          getCourseById({ id: courseId }).then((course) => {
+               if (!community) {
+                    setCourse(course);
+                    return;
+               }
+               setCourse({
+                    ...course,
+                    modulos: course.modulos.filter(
+                         (modu) => modu.id.toString() === moduleId
+                    ),
+               });
+          });
           getMaterialById({ id: materialId }).then((material) =>
                setMaterial(material)
           );
           setIsActive({ about: true, comments: false });
      }, [materialId, courseId]);
+
+     const handleBubble = () => {
+          setShowBar(false);
+          setSecondBar(false);
+     };
 
      function handleNextMaterial() {
           const moduleI = parseInt(moduleId);
@@ -271,7 +289,6 @@ export default function MaterialPage({ params }) {
           const lastClass = lastModule.clases[lastModule.clases.length - 1];
           if (materialI === lastClass.id) {
                setLocation(`/courses`);
-               console.log(material);
                return;
           }
           const currentModuleIndex = course.modulos.findIndex(
@@ -321,37 +338,58 @@ export default function MaterialPage({ params }) {
      return (
           <>
                <section
-                    className={`bg-material flex max-h-[70vh] overflow-hidden justify-center text-white lg:max-h-[80vh] ${
+                    className={`bg-material flex max-h-[70vh] justify-center overflow-hidden text-white lg:max-h-[80vh] ${
                          secondBar ? "" : "lg:pl-0"
                     } lg:p-3`}
                >
                     <div
-                         className={`hidden max-h-[70vh] ${
-                              secondBar ? "w-1/3" : "w-16"
+                         className={`relative hidden max-h-[70vh] rounded-xl bg-white text-[#051738] ${
+                              secondBar ? "w-1/3 pl-2" : "w-16"
                          } flex-col transition-all lg:flex`}
                     >
-                         <header className="flex max-h-[20vh] flex-col gap-5 pl-5">
-                              <Link
-                                   href="/courses"
-                                   className="flex items-center gap-2"
-                              >
-                                   <CourseIcons name="back" />{" "}
-                                   {secondBar && "My classes"}
-                              </Link>
-                              <h2
-                                   className={`text-lg font-medium ${
-                                        secondBar ? "" : "hidden"
+                         <div
+                              className={`icon-box-container absolute z-50 h-10 w-10 ${
+                                   secondBar ? "" : "rotate-arrow"
+                              } hidden items-center justify-start lg:flex`}
+                              onClick={handleSecondBar}
+                         >
+                              <ion-icon
+                                   className={`${
+                                        secondBar ? "" : "rotate-arrow"
                                    }`}
-                              >
-                                   {course.nombre}
-                              </h2>
-                         </header>
-                         <CourseNav
-                              courseId={courseId}
-                              units={course.modulos}
-                         />
+                                   name="chevron-forward-sharp"
+                              ></ion-icon>
+                         </div>
+                         <div className="overflow-hidden">
+                              <header className="flex max-h-[20vh] flex-col pt-2 gap-5 pl-5">
+                                   <Link
+                                        href="/courses"
+                                        className="a-icon flex items-center gap-2"
+                                   >
+                                        <CourseIcons name="back" />{" "}
+                                        {secondBar && "My classes"}
+                                   </Link>
+                                   <h2
+                                        className={`text-lg font-medium ${
+                                             secondBar ? "" : "hidden"
+                                        }`}
+                                   >
+                                        {course.nombre}
+                                   </h2>
+                              </header>
+                              <CourseNav
+                                   courseId={courseId}
+                                   units={course.modulos}
+                              />
+                         </div>
                     </div>
-                    <div className={`courses-container flex w-ful justify-between ${secondBar? "thicker-container": ""}`}>
+                    <div
+                         className={` courses-container w-ful flex ${
+                              secondBar || showBar
+                                   ? "justify-center"
+                                   : !community? "justify-center": "justify-between"
+                         } ${secondBar ? "thicker-container" : ""}`}
+                    >
                          <div className="lg:-max-h-none flex max-h-[70vh] w-full max-w-[50rem] flex-col items-center lg:w-[65%] lg:max-w-none lg:pl-5">
                               <ReactPlayer
                                    url={material.linkVideo}
@@ -372,11 +410,33 @@ export default function MaterialPage({ params }) {
                                    </button>
                               </div>
                          </div>
-                         {size > 1024 && <StudentsPage />}
+                         {community && (
+                              <div
+                                   className={`bubble-container ${
+                                        !secondBar && !showBar
+                                             ? "hide-bubble"
+                                             : ""
+                                   }`}
+                                   onClick={handleBubble}
+                              >
+                                   <img src={BubbleChat} alt="chat" />
+                              </div>
+                         )}
+                         {community
+                              ? size > 1024 && (
+                                     <StudentsPage
+                                          materialId={params.materialId}
+                                     />
+                                )
+                              : null}
                     </div>
                </section>
                <section className=" bg-gray-100">
-                    {size <= 1024 && <StudentsPage />}
+                    {community
+                         ? size <= 1024 && (
+                                <StudentsPage materialId={params.materialId} />
+                           )
+                         : null}
                     <header className="h-20 w-full border-b border-gray-200 bg-white px-10 shadow-sm">
                          <ul className="flex h-full items-center gap-5">
                               <li

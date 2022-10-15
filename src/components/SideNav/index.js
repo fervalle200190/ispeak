@@ -1,5 +1,7 @@
 import SideNavItem from "../SideNavItem";
 import SideNavIcons from "../SideNavIcons";
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+import ConnectedTvIcon from '@mui/icons-material/ConnectedTv';
 
 const NAV_ITEMS = {
   student: [
@@ -11,21 +13,21 @@ const NAV_ITEMS = {
     },
     {
       id: 1,
-      title: "Courses",
-      icon: <SideNavIcons name="courses" />,
+      title: "Learning Path",
+      icon: <CastForEducationIcon sx={{mr: 1}} />,
       url: "/courses",
     },
     {
       id: 2,
+      title: "Self-paced",
+      icon: <ConnectedTvIcon sx={{mr: 1}} />,
+      url: "/courses-paced",
+    },
+    {
+      id: 3,
       title: "Material",
       icon: <SideNavIcons name="material" />,
       url: "/refuerzo",
-    },
-    {
-      id: 6,
-      title: "My Community",
-      icon: <SideNavIcons name="community" />,
-      url: "/community",
     },
     // {
     //   title: "Matches",
@@ -35,13 +37,13 @@ const NAV_ITEMS = {
     //   url: "",
     // },
     {
-      id: 3,
+      id: 4,
       title: "Profile",
       icon: <SideNavIcons name="profile" />,
       url: "/profile",
     },
     {
-      id:4,
+      id:5,
       title: 'Calendar',
       icon: <SideNavIcons name='videocall' />,
       url: '/calendar'

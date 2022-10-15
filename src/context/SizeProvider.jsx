@@ -2,10 +2,14 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { SizeContext } from "./SizeContext";
 
+const rol = localStorage.getItem("loggedAppUser")
+     ? JSON.parse(localStorage.getItem(`loggedAppUser`)).rol
+     : false;
+
 export const SizeProvider = ({ children }) => {
-     const [size, setSize] = useState("");
-     const [showBar, setShowBar] = useState(true);
-     const [secondBar, setSecondBar] = useState(true);
+     const [size, setSize] = useState(window.innerWidth);
+     const [showBar, setShowBar] = useState(false);
+     const [secondBar, setSecondBar] = useState(false);
 
      const handleShowBar = () => {
           if (!showBar) {
@@ -29,8 +33,16 @@ export const SizeProvider = ({ children }) => {
                     setSecondBar(true);
                }
           });
-     }, [])
-     
+     }, []);
+     useEffect(() => {
+          if (rol === "Profesor") return;
+          if (showBar || secondBar) {
+               setTimeout(() => {
+                    setShowBar(false);
+                    setSecondBar(false);
+               }, 15000);
+          }
+     }, [showBar, secondBar]);
 
      return (
           <SizeContext.Provider
@@ -40,6 +52,8 @@ export const SizeProvider = ({ children }) => {
                     showBar,
                     secondBar,
                     handleSecondBar,
+                    setShowBar,
+                    setSecondBar,
                }}
           >
                {children}

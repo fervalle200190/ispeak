@@ -1,70 +1,148 @@
 body {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+     --tw-bg-opacity: 1;
+     background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .main-logo {
-  width: 210px;
+     width: 210px;
 }
 
 .no-m svg {
-  margin-right: 0 !important;
+     margin-right: 0 !important;
 }
 
 .icon-container ion-icon {
-  color: #fff;
-  margin: 0;
-  font-size: 24px;
-  margin-bottom: 15px;
-  cursor: pointer;
+     color: #fff;
+     margin: 0;
+     font-size: 24px;
+     margin-bottom: 15px;
+     cursor: pointer;
 }
 
 .icon-box-container ion-icon {
-  color: #fff;
-  position: relative;
-  right: 2px;
-  font-size: 12px;
-  transform: rotate(180deg);
-  transition: transform 0.2s ease-in-out;
+     color: #1e3a8a;
+     position: relative;
+     right: 2px;
+     font-size: 12px;
+     transform: rotate(180deg);
+     transition: transform 0.2s ease-in-out;
 }
 
 .rotate-arrow ion-icon {
-  transform: rotate(0deg);
+     transform: rotate(0deg);
+     color: #1e3a8a;
 }
 
 .icon-box-container {
-  cursor: pointer;
-  clip-path: polygon(0 0, 25% 27%, 25% 76%, 0% 100%);
-  top: 50%;
-  right: 0;
-  transform: translate(90%,-50%);
-  opacity: 0;
-  background: #1e3a8a;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+     cursor: pointer;
+     clip-path: polygon(0 0, 25% 27%, 25% 76%, 0% 100%);
+     top: 50%;
+     right: 0;
+     transform: translate(100%, -50%);
+     opacity: 0;
+     background: #fff;
+     transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .icon-box-container:hover {
-  transform: translate(100%,-50%);
-  opacity: 1;
+     transform: translate(98%, -50%);
+     opacity: 1;
 }
 
 .relative:hover .icon-box-container {
-  transform: translate(100%,-50%);
-  opacity: 1;
+     transform: translate(98%, -50%);
+     opacity: 1;
 }
 
 .op-scroll::-webkit-scrollbar-track {
-  background: #1e3b8a31 !important;
+     background: #1e3b8a31 !important;
 }
 
 .op-scroll::-webkit-scrollbar-thumb {
-  background: #d1d5db31 !important;
+     background: #d1d5db31 !important;
 }
 
 .op-scroll:hover::-webkit-scrollbar-track {
-  background: #1e3a8a !important;
+     background: #1e3a8a !important;
 }
 
 .op-scroll:hover::-webkit-scrollbar-thumb {
-  background: #d1d5db !important;
+     background: #d1d5db !important;
+}
+
+.a-icon svg path {
+     fill: #1e3a8a;
+}
+
+.input-pre {
+     width: 100%;
+     font-family: "Poppins";
+     height: 33px;
+     border-radius: 30px;
+     border: 1px solid #a7a7a7;
+     padding-left: 15px;
+     transition: all 0.2s ease-in-out;
+     outline: 1px solid #fff;
+}
+
+.input-pre:focus {
+     outline: 1px solid #2c96fb;
+     border: 1px solid #2c96fb;
+     box-shadow: 0 0 7px #8dc8ff;
+}
+
+.error-input-pre, .error-input-pre:focus {
+     outline: 1px solid #fd2c1d;
+     border: 1px solid #fd2c1d;
+     box-shadow: 0 0 7px #fd2c1d;
+}
+
+.pre-label {
+     margin-left: 5px;
+}
+
+.btn-pre-form {
+     color: #fff;
+     background: #2c96fb;
+     width: 180px;
+     font-family: inherit;
+     text-transform: uppercase;
+     height: 45px;
+     font-size: 24px;
+     border-radius: 33px;
+     font-weight: 700;
+     margin-top: 50px;
+     transition: all 0.2s ease-in-out;
+}
+
+.btn-pre-form:hover {
+     box-shadow: 0 0 15px #8dc8ff;
+}
+
+.desktop-form {
+     display: none;
+}
+
+@media screen and (min-width: 900px) {
+     .desktop-form {
+          display: block;
+     }
+     .mobile-form {
+          display: none;
+     }
+}
+
+.show-card-fadeIn {
+     animation: fadeInCard 0.2s ease-in-out;
+}
+
+@keyframes fadeInCard {
+     0% {
+          opacity: 0;
+          transform: translate(0, -10px);
+     }
+     100% {
+          opacity: 1;
+          transform: translate(0,0);
+     }
 }

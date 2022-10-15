@@ -59,7 +59,7 @@ const RenderStudent = ({ courses }) => {
   return (
     <div className="max-w-7xl">
       <DashboardSection />
-      <DashboardCourses />
+      {/* <DashboardCourses /> */}
     </div>
   );
 };

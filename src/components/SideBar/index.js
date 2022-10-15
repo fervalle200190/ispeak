@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { SideBarContext } from "context/sideBarContext";
 import { Link } from "wouter";
-import Logo from "../../assets/english-4-tech-propuestas-de-logo-03.png";
-import MiniLogo from "../../assets/Recurso-1.svg";
+import Logo from "../../assets/logo-ispeak-nuevo.svg";
+import MiniLogo from "../../assets/ispeak-icono-02.svg";
 
 import SideNav from "../SideNav";
 import SideNavIcon from "components/SideNavIcons";
@@ -22,7 +22,7 @@ export default function SideBar() {
                     <header className={`mb-4 p-2 pt-10 ${showBar? "": "flex flex-col items-center"} icon-container`}>
                          <ion-icon name="menu" onClick={handleShowBar}></ion-icon>
                          <Link href="/" className=" text-5xl font-light text-white">
-                              <img className="main-logo" src={showBar ? Logo : MiniLogo} alt="English 4 tech" />
+                              <img className={`main-logo ${showBar? `ml-[13px]`: ``}`} src={showBar ? Logo : MiniLogo} alt="English 4 tech" />
                          </Link>
                     </header>
                     <SideNav />

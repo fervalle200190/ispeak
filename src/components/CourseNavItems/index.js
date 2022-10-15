@@ -25,7 +25,7 @@ export default function CourseNavItems({ courseId, moduleId, materials = [], sho
                                    className="flex items-center gap-3"
                                    href={`/courses/${courseId}/module/${moduleId}/material/${id}`}
                               >
-                                   <div className={`bg-accent flex ${secondBar? "min-w-[2rem] h-8": "min-w-[1.5rem] h-[1.5rem]"} items-center justify-center rounded-full opacity-10`}>
+                                   <div className={`bg-accent flex ${secondBar? "min-w-[2rem] h-8": "min-w-[1.5rem] h-[1.5rem]"} items-center justify-center rounded-full opacity-50`}>
                                         <CourseIcons name="play" />
                                    </div>
                                    <h4 className={`font-semibold ${secondBar? "": "hidden"}`}>{nombre}</h4>

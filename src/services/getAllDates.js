@@ -1,7 +1,7 @@
-import { API_KEY, API_URL } from "./settings";
+import { API_KEY, API_URL, USER_ID } from "./settings";
 
 export default function getAllDates() {
-    const URL = `${API_URL}/Calendar/GetAll/${API_KEY}`;
+    const URL = `${API_URL}/Calendar/GetAll/${API_KEY}/${USER_ID}`;
     return fetch(URL)
       .then((response) => response.json())
       .then((response) => {

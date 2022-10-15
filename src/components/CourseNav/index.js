@@ -6,9 +6,6 @@ export default function CourseNav({ courseId, units = [] }) {
      const { showBar, secondBar, handleSecondBar } = useContext(SizeContext)
      return (
           <div className="relative">
-               <div className={`absolute z-50 h-10 w-10 icon-box-container ${secondBar? "": "rotate-arrow"} items-center justify-start hidden lg:flex`} onClick={handleSecondBar}>
-                    <ion-icon className={`${secondBar? "": "rotate-arrow"}`} name="chevron-forward-sharp"></ion-icon>
-               </div>
                <div className={`scrollbar scrollbar-thin transition-all scrollbar-thumb-gray-300 pr-2 scrollbar-track-blue-900 scroll-cont relative max-h-[60vh] ${secondBar? "": "op-scroll"}`}>
                     <div className="ltr pl-5">
                          <nav className="flex flex-col gap-5">

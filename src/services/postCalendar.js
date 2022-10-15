@@ -1,7 +1,7 @@
-import { API_KEY, API_URL } from "./settings";
+import { API_KEY, API_URL, USER_ID } from "./settings";
 
 export const postCalendar = async (data)=> {
-    const URL = `${API_URL}/Calendar/Create/${API_KEY}`;
+    const URL = `${API_URL}/Calendar/Create/${API_KEY}/${USER_ID}`;
     return fetch(URL, {
         method: 'POST',
         body: data,
