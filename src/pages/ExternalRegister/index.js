@@ -68,7 +68,7 @@ export default function ExternalRegisterPage({ params }) {
           }
           if (!payment.testInfo) {
                setIsModalOpen(true);
-               setUrl(`http://66.94.118.205:3002/${payment.paymentInfo.code}`)
+               setUrl(`https://test.ispeak.team/${payment.paymentInfo.code}`)
                return;
           }
           const paymentInfo = payment.paymentInfo;
