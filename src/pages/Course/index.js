@@ -100,11 +100,11 @@ export default function CoursePage({ params, url }) {
 
   // useEffect(() => {
   //   getCourseById({ id }).then((course) => setCourse(course));
-  //   const filterCourse = courses.filter(
+  //   const filterCourse = course.filter(
   //     (course) => course.id === parseInt(id)
   //   )[0];
   //   setCourse(filterCourse);
-  // }, [courses, id]);
+  // }, [course, id]);
   
 
   return (

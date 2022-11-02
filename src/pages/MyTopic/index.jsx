@@ -16,10 +16,6 @@ import {
      doc,
      setDoc,
      collection,
-     getDocs,
-     query,
-     where,
-     addDoc,
      onSnapshot,
 } from "firebase/firestore";
 import { SizeContext } from "context/SizeContext";

@@ -11,13 +11,17 @@ import postComment from "services/postComment";
 import CourseNav from "components/CourseNav";
 import CourseIcons from "components/CourseIcons";
 
-import "./styles.css";
+import "../Material/styles.css";
 import setMaterialComplete from "services/setMaterialComplete";
 import { SizeContext } from "context/SizeContext";
 import StudentsPage from "pages/MyTopic";
 import BubbleChat from "../../assets/burbuja-chat.svg";
 import { updateCourse } from "services/updateCourse";
 import { MeetingModal } from "components/MeetingModal";
+import { getModulesComboByCourse } from "services/getModulesComboByCourse";
+import { getCourseByIdAsync } from "services/getCourseByIdAsync";
+import { getAllStudyMaterials } from "services/getAllStudyMaterials";
+import { CoursesContext } from "context/coursesContext";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -225,15 +229,17 @@ function MaterialCommentsSection({ courseId, materialId, isActive = false }) {
      );
 }
 
-export default function MaterialPage({ params, community = true, url }) {
+export default function MaterialCommunityPage({ params, community = true, url }) {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
      const { secondBar, showBar, setShowBar, setSecondBar, handleSecondBar } =
           useContext(SizeContext);
      const { size } = useContext(SizeContext);
+     const { courses } = useContext(CoursesContext);
      const { courseId, moduleId, materialId } = params;
      const [course, setCourse] = useState({});
-     const [isModalOpen, setIsModalOpen] = useState(false)
+     const [isModalOpen, setIsModalOpen] = useState(false);
      const [material, setMaterial] = useState({});
+     const [modules, setModules] = useState([]);
      const [isActive, setIsActive] = useState({
           about: true,
           comments: false,
@@ -241,12 +247,12 @@ export default function MaterialPage({ params, community = true, url }) {
      });
      const [location, setLocation] = useLocation();
 
-     const openModal = ()=> {
-          setIsModalOpen(true)
-     }
-     const closeModal = ()=> {
-          setIsModalOpen(false)
-     }
+     const openModal = () => {
+          setIsModalOpen(true);
+     };
+     const closeModal = () => {
+          setIsModalOpen(false);
+     };
      const updateCompleteVideo = async () => {
           const newData = {
                ...course,
@@ -260,25 +266,44 @@ export default function MaterialPage({ params, community = true, url }) {
                     return modules;
                }),
           };
-          setCourse(newData)
+          setCourse(newData);
           setMaterialComplete({
                materialId,
                classNum: material.claseNumero,
           });
      };
 
+     const getData = async () => {
+          const { modules } = await getModulesComboByCourse(courseId);
+          const study = await getAllStudyMaterials();
+          const newModules = modules.map((mod) => ({
+               id: mod.id,
+               nombre: mod.name,
+               clases: study.studyMaterials
+                    .filter((material) => material.moduloId === mod.id)
+                    .map((material) => ({id: material.id, nombre: material.nombre, completada: false})),
+          }));
+          // setCourse(courses.find((course)=> course.id === courseId))
+          setModules(newModules);
+     };
+
      useEffect(() => {
-          getCourseById({ id: courseId }).then((course) => {
-               if (!community) {
-                    setCourse(course);
-                    return;
-               }
-               setCourse({
-                    ...course,
-                    modulos: course.modulos.filter((modu) => modu.id.toString() === moduleId),
-               });
-          });
+          getData();
           getMaterialById({ id: materialId }).then((material) => setMaterial(material));
+     }, [materialId, courseId]);
+
+     useEffect(() => {
+          // getCourseById({ id: courseId }).then((course) => {
+          //      if (!community) {
+          //           setCourse(course);
+          //           return;
+          //      }
+          //      setCourse({
+          //           ...course,
+          //           modulos: course.modulos.filter((modu) => modu.id.toString() === moduleId),
+          //      });
+          // });
+          // getMaterialById({ id: materialId }).then((material) => setMaterial(material));
           setIsActive({ about: true, comments: false });
      }, [materialId, courseId]);
 
@@ -375,7 +400,7 @@ export default function MaterialPage({ params, community = true, url }) {
                                         {course.nombre}
                                    </h2>
                               </header>
-                              <CourseNav courseId={courseId} units={course.modulos} url={url} />
+                              <CourseNav courseId={courseId} units={modules} url={url} />
                          </div>
                     </div>
                     <div

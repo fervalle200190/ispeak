@@ -92,6 +92,12 @@ const NAV_ITEMS = {
       icon: <SideNavIcons name="community" />,
       url: "/community",
     },
+    {
+      id: 7,
+      title: "Courses",
+      icon: <SideNavIcons name="courses" />,
+      url: "/course-community",
+    },
   ],
 };
 

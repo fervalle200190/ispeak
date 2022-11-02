@@ -1,3 +1,4 @@
+import { Grid, Typography } from "@mui/material";
 import { ModalTest } from "components/ModalTest";
 import { useForm } from "hooks/useForm";
 import { useState } from "react";
@@ -5,6 +6,7 @@ import postLogin from "services/postLogin";
 import { postMercadoPago } from "services/postMercadoPago";
 import { buildObject } from "utils";
 import { Link } from "wouter";
+import HeroImage from "../../assets/hero-img-1.png";
 import "./styles.css";
 
 const initialForm = {
@@ -18,7 +20,7 @@ export default function LoginPage() {
      const {
           formState: { email, password },
           onInputChange,
-          onResetForm
+          onResetForm,
      } = useForm(initialForm);
      const [url, setUrl] = useState("");
      const [isError, setIsError] = useState(false);
@@ -30,17 +32,17 @@ export default function LoginPage() {
           if (data.statusDetail) {
                setIsLoading(false);
                setIsModalOpen(true);
-               const dataToSend = buildObject(data)
-               const res = await postMercadoPago(dataToSend)
-               if(res.redirect_url) {
-                    setUrl(res.redirect_url)
-                    return
+               const dataToSend = buildObject(data);
+               const res = await postMercadoPago(dataToSend);
+               if (res.redirect_url) {
+                    setUrl(res.redirect_url);
+                    return;
                }
-               setUrl(res.url)
+               setUrl(res.url);
                return;
           }
           if (data === false) {
-               onResetForm()
+               onResetForm();
                setIsError(true);
                setIsLoading(false);
                return;
@@ -51,6 +53,22 @@ export default function LoginPage() {
 
      return (
           <div className="flex h-screen w-screen items-center justify-center">
+               {/* <Grid container alignItems={'center'} justifyContent={"center"} flexDirection={'column'}>
+                    <Grid item maxWidth={500}>
+                         <img src={HeroImage} alt={"welcome image"} />
+                    </Grid>
+                    <Grid item maxWidth={500} sx={{mt: 3}}>
+                         <Typography
+                              variant={"h5"}
+                              fontWeight={500}
+                              color={"#1e3a8a"}
+                              textAlign={"center"}
+                         >
+                              A contar del martes 14 de noviembre podrás acceder a tu comunidad y
+                              disfrutar de todas las funciones de tu plan contratado
+                         </Typography>
+                    </Grid>
+               </Grid> */}
                <form
                     onSubmit={handleLogin}
                     className="bg-primary flex h-96 w-4/12 min-w-[24rem] max-w-md flex-col items-center justify-between gap-5 rounded-3xl p-10 shadow-md"
