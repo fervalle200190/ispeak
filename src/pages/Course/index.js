@@ -83,9 +83,24 @@ function AccordionItem({ course, module, index, url }) {
 }
 
 function Module({ course, modules = [], url }) {
-     return modules.map((module, index) => (
-          <AccordionItem key={module.id} course={course} module={module} index={index} url={url} />
-     ));
+     const newModules = useMemo(() => {
+          return modules.sort((a, b) =>
+               parseInt(a.nombre.slice(6, 9)) > parseInt(b.nombre.slice(6, 9)) ? 1 : -1
+          );
+     }, [modules]);
+     return (
+          <>
+               {newModules.map((module, index) => (
+                    <AccordionItem
+                         key={module.id}
+                         course={course}
+                         module={module}
+                         index={index}
+                         url={url}
+                    />
+               ))}
+          </>
+     );
 }
 
 export default function CoursePage({ params, url }) {
