@@ -16,7 +16,7 @@ export default function SideBar() {
           <>
                <aside
                     className={`fixed top-0 left-0 z-30 hidden h-screen transition-[width] overflow-y-auto ${
-                         showBar ? "w-65" : "w-10"
+                         showBar ? "w-60" : "w-10"
                     } from-primary to-primary-darker flex-col bg-gradient-to-b md:flex`}
                >
                     <header className={`mb-4 p-2 pt-10 ${showBar? "": "flex flex-col items-center"} icon-container`}>
