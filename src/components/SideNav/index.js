@@ -14,13 +14,13 @@ const NAV_ITEMS = {
     {
       id: 1,
       title: "Learning Path",
-      icon: <CastForEducationIcon sx={{mr: 1}} />,
+      icon: <CastForEducationIcon sx={{mr: 1, ':hover': {color: '#5df99c'}}} />,
       url: "/courses",
     },
     {
       id: 2,
       title: "Self-paced",
-      icon: <ConnectedTvIcon sx={{mr: 1}} />,
+      icon: <ConnectedTvIcon sx={{mr: 1, ':hover': {color: '#5df99c'}}} />,
       url: "/courses-paced",
     },
     {
