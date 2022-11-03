@@ -147,7 +147,6 @@ body {
      }
 }
 
-.to-green:hover > .css-unlvdv-MuiSvgIcon-root path {
+.to-green:hover > .MuiSvgIcon-root path {
      fill: #5df99c !important;
-     background-color: #5df99c !important;
 }
