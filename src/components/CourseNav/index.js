@@ -12,8 +12,8 @@ export default function CourseNav({ courseId, units = [], url }) {
                               {units.map(({ id, nombre, clases }, index) => (
                                    <div key={id} className="flex flex-col">
                                         <div className={`my-2 flex items-center gap-2 ${secondBar? "": "justify-center"}`}>
-                                             <div className={`relative ${secondBar? "right-5": ""} flex h-8 w-8 items-center justify-center rounded-full lg:bg-gray-600 bg-[#000027] text-white`}>
-                                                  <h4 className="font-semibold">L{index + 1}</h4>
+                                             <div className={`relative ${secondBar? "right-5 w-40": "w-8"} flex h-8 items-center justify-center rounded-full lg:bg-gray-600 bg-[#000027] text-white`}>
+                                                  <h4 className="font-semibold">{secondBar? 'Content Bubble': 'CB'}{index + 1}</h4>
                                              </div>
                                              <h2 className={secondBar? "": "hidden"}>{nombre}</h2>
                                         </div>
