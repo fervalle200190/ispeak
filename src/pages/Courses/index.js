@@ -20,7 +20,7 @@ export default function CoursesPage({ url }) {
      const [search, setSearch] = useState("");
      const [category, setCategory] = useState(initialSelect);
      const [status, setStatus] = useState(initialSelect);
-     const courses = useContext(CoursesContext);
+     const { courses } = useContext(CoursesContext);
 
      const handleCategory = (e) => {
           setCategory(e.target.value);

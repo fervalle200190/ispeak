@@ -150,3 +150,16 @@ body {
 .to-green:hover > .MuiSvgIcon-root path {
      fill: #5df99c !important;
 }
+
+.bubble-img { 
+     width: 100%;
+}
+
+.bubble-text {
+     top: 30%;
+     line-height: 20px;
+}
+
+.show-peace-page {
+     animation: fadeInCard 0.2s ease-in-out;
+}

@@ -269,6 +269,7 @@ export default function MaterialPage({ params, community = true, url }) {
 
      useEffect(() => {
           getCourseById({ id: courseId }).then((course) => {
+               console.log(course)
                if (!community) {
                     setCourse(course);
                     return;
@@ -364,7 +365,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          </div>
                          <div className="overflow-hidden">
                               <header className="flex max-h-[20vh] flex-col gap-5 pt-2 pl-5">
-                                   <Link href="/courses" className="a-icon flex items-center gap-2">
+                                   <Link href={`/bubble/${courseId}/${params.bubbleId}`} className="a-icon flex items-center gap-2">
                                         <CourseIcons name="back" /> {secondBar && "My classes"}
                                    </Link>
                                    <h2

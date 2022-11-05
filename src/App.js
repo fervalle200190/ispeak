@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "wouter";
+import { Redirect, Route, Switch, useLocation } from "wouter";
 
 import LoginPage from "pages/Login";
 import DashboardPage from "./pages/Dashboard";
@@ -29,11 +29,14 @@ import JitsiMeetPage from "pages/JitsiMeet";
 import { SizeContext } from "context/SizeContext";
 import { PreSignUp } from "pages/PreSignUp";
 import { PasswordPage } from "pages/Password";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import getAllCourses from "services/getAllCourses";
 import CourseCommunityPage from "pages/CourseCommunity";
 import ModuleCommunityPage from "pages/ModuleCommunity";
 import MaterialCommunityPage from "pages/MaterialCommunity";
+import { BubblePage } from "pages/BubblePage";
+import { collection, getDocs, query } from "firebase/firestore";
+import { firestore } from "./firebase/credentials";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -94,6 +97,7 @@ const RenderStudentView = () => {
      const [courses, setCourses] = useState([]);
      const { showBar } = useContext(SizeContext);
 
+
      useEffect(() => {
           getAllCoursesByUser(USER.id).then((response) => {
                setCourses(response);
@@ -102,7 +106,7 @@ const RenderStudentView = () => {
 
      return (
           <>
-               <CoursesContext.Provider value={courses}>
+               <CoursesContext.Provider value={{courses}}>
                     <div
                          className={`App tranisition-all flex flex-col items-center ${
                               showBar ? "md:ml-60" : "md:ml-10"
@@ -131,10 +135,16 @@ const RenderStudentView = () => {
                                              <CoursePage url="courses-paced" params={params} />
                                         )}
                                    </Route>
-                                   <Route path="/courses/:courseId/module/:moduleId/material/:materialId">
+                                   <Route path="/courses-paced/bubble/:courseId/:moduleId">
+                                        {(params)=> <BubblePage params={params} url={'courses-paced'} />}
+                                   </Route>
+                                   <Route path="/courses/bubble/:courseId/:moduleId">
+                                        {(params)=> <BubblePage params={params} url={'courses'} />}
+                                   </Route>
+                                   <Route path="/courses/:courseId/module/:moduleId/material/:materialId/:bubbleId">
                                         {(params) => <MaterialPage url={'courses'} params={params} />}
                                    </Route>
-                                   <Route path="/courses-paced/:courseId/module/:moduleId/material/:materialId">
+                                   <Route path="/courses-paced/:courseId/module/:moduleId/material/:materialId/:bubbleId">
                                         {(params) => (
                                              <MaterialPage url={'courses-paced'} community={false} params={params} />
                                         )}

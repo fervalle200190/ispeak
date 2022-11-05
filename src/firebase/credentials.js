@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 
@@ -12,7 +13,8 @@ const firebaseConfig = {
      appId: "1:786396996822:web:be9bcaca0e5fa34dfe1577",
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+export const firebaseApp = initializeApp(firebaseConfig);
+export const firestore = getFirestore(firebaseApp);
 const storage = getStorage();
 
 export const uploadFile = async (file) => {
