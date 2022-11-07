@@ -3,7 +3,6 @@ import { CoursesContext } from "context/coursesContext";
 import { firestore } from "../../firebase/credentials";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Link } from "wouter";
 
 export const BubblePage = ({ params, url }) => {
      const { courses } = useContext(CoursesContext) || [];
@@ -19,9 +18,10 @@ export const BubblePage = ({ params, url }) => {
      }, [courses]);
      const modulesToUse = useMemo(() => {
           if (module.length <= 0) return [];
+          if(!course.modulos) return
           const newModules = course.modulos.filter((mod) => module.bubbleIds.includes(mod.id));
           return newModules;
-     }, [module]);
+     }, [module, course]);
 
      const getData = async () => {
           const docRef = collection(firestore, "modulos", `${params.courseId}`, "modulos");
@@ -39,7 +39,7 @@ export const BubblePage = ({ params, url }) => {
 
      return (
           <section className="p-5 md:p-10 show-peace-page">
-               <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">BubblePage</h1>
+               <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">{module.moduleName}</h1>
                <div className="flex gap-10 flex-wrap">
                     {modulesToUse.map((mod) => (
                          <BubbleModules
