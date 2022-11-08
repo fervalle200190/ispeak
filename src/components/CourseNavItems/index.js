@@ -2,7 +2,7 @@ import { Link } from "wouter";
 
 import CourseIcons from "components/CourseIcons";
 
-export default function CourseNavItems({ courseId, moduleId, materials = [], showBar, secondBar, url }) {
+export default function CourseNavItems({ courseId, moduleId, bubbleId, materials = [], showBar, secondBar, url }) {
      return (
           <ol>
                {materials.map(({ id, nombre, completada }, index) => {
@@ -10,7 +10,7 @@ export default function CourseNavItems({ courseId, moduleId, materials = [], sho
                          <li key={id} className={`flex items-center p-2 text-gray-500 ${secondBar? "": "pl-0 pr-0 justify-center"}`}>
                               <Link
                                    className="flex items-center gap-3"
-                                   href={`/${url}/${courseId}/module/${moduleId}/material/${id}`}
+                                   href={`/${url}/${courseId}/module/${moduleId}/material/${id}/${bubbleId}`}
                               >
                                    <div className={`bg-accent flex ${secondBar? "min-w-[2rem] h-8": "min-w-[1.5rem] h-[1.5rem]"} items-center justify-center rounded-full`}>
                                         <CourseIcons name="check" />
@@ -23,7 +23,7 @@ export default function CourseNavItems({ courseId, moduleId, materials = [], sho
                          <li key={id} className={`flex items-center p-2 ${secondBar? "": "pl-0 pr-0 justify-center"}`}>
                               <Link
                                    className="flex items-center gap-3"
-                                   href={`/${url}/${courseId}/module/${moduleId}/material/${id}`}
+                                   href={`/${url}/${courseId}/module/${moduleId}/material/${id}/${bubbleId}`}
                               >
                                    <div className={`bg-accent flex ${secondBar? "min-w-[2rem] h-8": "min-w-[1.5rem] h-[1.5rem]"} items-center justify-center rounded-full opacity-50`}>
                                         <CourseIcons name="play" />

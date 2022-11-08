@@ -2,7 +2,7 @@ import CourseNavItems from "components/CourseNavItems";
 import { SizeContext } from "context/SizeContext";
 import { useContext } from "react";
 
-export default function CourseNav({ courseId, units = [], url }) {
+export default function CourseNav({ courseId, bubbleId, units = [], url }) {
      const { showBar, secondBar, handleSecondBar } = useContext(SizeContext)
      return (
           <div className="relative">
@@ -17,7 +17,7 @@ export default function CourseNav({ courseId, units = [], url }) {
                                              </div>
                                              <h2 className={secondBar? "": "hidden"}>{nombre}</h2>
                                         </div>
-                                        <CourseNavItems courseId={courseId} materials={clases} moduleId={id} showBar={showBar} secondBar={secondBar} url={url} />
+                                        <CourseNavItems courseId={courseId} bubbleId={bubbleId} materials={clases} moduleId={id} showBar={showBar} secondBar={secondBar} url={url} />
                                         { !secondBar && <div className="border-t w-8 border-gray-500 mt-5"></div> }
                                    </div>
                               ))}

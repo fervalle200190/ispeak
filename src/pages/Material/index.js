@@ -18,6 +18,7 @@ import StudentsPage from "pages/MyTopic";
 import BubbleChat from "../../assets/burbuja-chat.svg";
 import { updateCourse } from "services/updateCourse";
 import { MeetingModal } from "components/MeetingModal";
+import { postMaterialCompleteAsync } from "services/postMaterialCompleteAsync";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -230,9 +231,10 @@ export default function MaterialPage({ params, community = true, url }) {
      const { secondBar, showBar, setShowBar, setSecondBar, handleSecondBar } =
           useContext(SizeContext);
      const { size } = useContext(SizeContext);
-     const { courseId, moduleId, materialId } = params;
+     const { courseId, moduleId, materialId, bubbleId } = params;
      const [course, setCourse] = useState({});
-     const [isModalOpen, setIsModalOpen] = useState(false)
+     const [isModalOpen, setIsModalOpen] = useState(false);
+     const [completedPercentage, setCompletedPercentage] = useState('')
      const [material, setMaterial] = useState({});
      const [isActive, setIsActive] = useState({
           about: true,
@@ -241,12 +243,18 @@ export default function MaterialPage({ params, community = true, url }) {
      });
      const [location, setLocation] = useLocation();
 
-     const openModal = ()=> {
-          setIsModalOpen(true)
-     }
-     const closeModal = ()=> {
-          setIsModalOpen(false)
-     }
+     const openModal = () => {
+          setIsModalOpen(true);
+     };
+     const closeModal = () => {
+          setIsModalOpen(false);
+     };
+
+     useEffect(() => {
+       if(completedPercentage === '') return
+
+     }, [completedPercentage])
+     
      const updateCompleteVideo = async () => {
           const newData = {
                ...course,
@@ -260,16 +268,20 @@ export default function MaterialPage({ params, community = true, url }) {
                     return modules;
                }),
           };
-          setCourse(newData)
-          setMaterialComplete({
+          setCourse(newData);
+          const { ok } = await postMaterialCompleteAsync({
                materialId,
                classNum: material.claseNumero,
+          })
+          if(!ok) return
+          getCourseById({ id: courseId }).then((course) => {
+               setCompletedPercentage(course.porcentajeCompletado)
           });
      };
 
      useEffect(() => {
           getCourseById({ id: courseId }).then((course) => {
-               console.log(course)
+               setCompletedPercentage(course.porcentajeCompletado)
                if (!community) {
                     setCourse(course);
                     return;
@@ -308,12 +320,12 @@ export default function MaterialPage({ params, community = true, url }) {
                if (currentMaterialIndex === currentModule.clases.length - 1) {
                     const nextModule = course.modulos[currentModuleIndex + 1];
                     setLocation(
-                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}`
+                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${bubbleId}`
                     );
                } else {
                     const nextMaterial = currentModule.clases[currentMaterialIndex + 1];
                     setLocation(
-                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}`
+                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${bubbleId}`
                     );
                }
           } else {
@@ -324,7 +336,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          classNum: material.claseNumero,
                     });
                     setLocation(
-                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}`
+                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${bubbleId}`
                     );
                } else {
                     const nextMaterial = currentModule.clases[currentMaterialIndex + 1];
@@ -333,7 +345,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          classNum: material.claseNumero,
                     });
                     setLocation(
-                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}`
+                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${bubbleId}`
                     );
                }
           }
@@ -365,7 +377,10 @@ export default function MaterialPage({ params, community = true, url }) {
                          </div>
                          <div className="overflow-hidden">
                               <header className="flex max-h-[20vh] flex-col gap-5 pt-2 pl-5">
-                                   <Link href={`/${url}/bubble/${courseId}/${params.bubbleId}`} className="a-icon flex items-center gap-2">
+                                   <Link
+                                        href={`/${url}/bubble/${courseId}/${bubbleId}`}
+                                        className="a-icon flex items-center gap-2"
+                                   >
                                         <CourseIcons name="back" /> {secondBar && "My classes"}
                                    </Link>
                                    <h2
@@ -376,7 +391,7 @@ export default function MaterialPage({ params, community = true, url }) {
                                         {course.nombre}
                                    </h2>
                               </header>
-                              <CourseNav courseId={courseId} units={course.modulos} url={url} />
+                              <CourseNav courseId={courseId} bubbleId={bubbleId} units={course.modulos} url={url} />
                          </div>
                     </div>
                     <div
