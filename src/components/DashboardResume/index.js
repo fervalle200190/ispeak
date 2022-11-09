@@ -72,7 +72,6 @@ export default function DashboardResume() {
                                    <div className="absolute left-0 top-0 z-10 h-full w-full rounded-bl-[2rem] bg-black opacity-30"></div>
                                    <span className="absolute left-2 top-2 z-10 text-xl font-semibold">
                                         {resume.nombre}
-                                        {console.log(resume)}
                                    </span>
                                    <button
                                         onClick={() => handleResume()}

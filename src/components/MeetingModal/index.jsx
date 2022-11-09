@@ -1,8 +1,18 @@
 import { Button, Grid, Modal, Typography } from "@mui/material";
+import { CardsContainer } from "components/CardsContainer";
+import { useState } from "react";
 
-export const MeetingModal = ({ isModalOpen, closeModal }) => {
+export const MeetingModal = ({ isModalOpen, closeModal, professorsModal }) => {
+     const [appointmentShow, setAppointmentShow] = useState(false);
+     const onAppointmentShow = () => {
+          setAppointmentShow(true);
+     };
      return (
-          <Modal open={isModalOpen} onClose={closeModal} sx={{ display: "flex", alignItems: "center" }}>
+          <Modal
+               open={isModalOpen}
+               onClose={closeModal}
+               sx={{ display: "flex", alignItems: "center" }}
+          >
                <Grid
                     container
                     sx={{
@@ -12,6 +22,8 @@ export const MeetingModal = ({ isModalOpen, closeModal }) => {
                          borderRadius: "7px",
                          p: 4,
                          outline: "none",
+                         overflowY: "auto",
+                         maxHeight: "500px",
                     }}
                >
                     <Grid item xs={12}>
@@ -24,22 +36,26 @@ export const MeetingModal = ({ isModalOpen, closeModal }) => {
                               Great job! Time to practice with a coach
                          </Typography>
                     </Grid>
-                    <Grid item xs={12} display="flex" justifyContent="center" marginTop={3}>
-                         <Button variant="contained" color="error">
-                              No, thank you
-                         </Button>
-                         <Button
-                              variant="contained"
-                              sx={{
-                                   backgroundColor: "#5df99c",
-                                   ml: 2,
-                                   color: "#1e3a8a",
-                                   ":hover": { backgroundColor: "#4bd88b" },
-                              }}
-                         >
-                              Yes, schedule my class
-                         </Button>
-                    </Grid>
+                    {appointmentShow && <CardsContainer professorsModal={professorsModal} />}
+                    {!appointmentShow && (
+                         <Grid item xs={12} display="flex" justifyContent="center" marginTop={3}>
+                              <Button variant="contained" color="error" onClick={closeModal}>
+                                   No, thank you
+                              </Button>
+                              <Button
+                                   onClick={onAppointmentShow}
+                                   variant="contained"
+                                   sx={{
+                                        backgroundColor: "#5df99c",
+                                        ml: 2,
+                                        color: "#1e3a8a",
+                                        ":hover": { backgroundColor: "#4bd88b" },
+                                   }}
+                              >
+                                   Yes, schedule my class
+                              </Button>
+                         </Grid>
+                    )}
                </Grid>
           </Modal>
      );

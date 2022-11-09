@@ -19,6 +19,8 @@ import BubbleChat from "../../assets/burbuja-chat.svg";
 import { updateCourse } from "services/updateCourse";
 import { MeetingModal } from "components/MeetingModal";
 import { postMaterialCompleteAsync } from "services/postMaterialCompleteAsync";
+import { collection, getDocs, query } from "firebase/firestore";
+import { firestore } from "../../firebase/credentials";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -234,7 +236,8 @@ export default function MaterialPage({ params, community = true, url }) {
      const { courseId, moduleId, materialId, bubbleId } = params;
      const [course, setCourse] = useState({});
      const [isModalOpen, setIsModalOpen] = useState(false);
-     const [completedPercentage, setCompletedPercentage] = useState('')
+     const [professorsModal, setProfessorsModal] = useState([])
+     const [completedPercentage, setCompletedPercentage] = useState("");
      const [material, setMaterial] = useState({});
      const [isActive, setIsActive] = useState({
           about: true,
@@ -250,11 +253,33 @@ export default function MaterialPage({ params, community = true, url }) {
           setIsModalOpen(false);
      };
 
-     useEffect(() => {
-       if(completedPercentage === '') return
+     const checkPercentage = async () => {
+          const docRef = query(collection(firestore, 'professors'))
+          const docs = await getDocs(docRef)
+          const professorsList = []
+          docs.forEach(doc => {
+               professorsList.push(doc.data())
+          });
+          const professorsByCourse = professorsList.filter((prof)=> prof.courseIds?.includes(parseInt(courseId)))
+          const professors = professorsByCourse.sort((a,b)=> a.percentage < b.percentage? 1: -1).find(e => e.percentage <= completedPercentage)
+          const newProf = []
+          for (let i = 0; i < professors.professorsAmount; i++) {
+               newProf[i] = {
+                    name: professors[`profe-${i + 1}-name`],
+                    link: professors[`profe-${i + 1}-link`],
+                    photoUrl: professors[`profe-${i + 1}-photo`]
+               }
+          }
+          if(newProf.length <= 0) return
+          setProfessorsModal(newProf)
+          setIsModalOpen(true)
+     };
 
-     }, [completedPercentage])
-     
+     useEffect(() => {
+          if (completedPercentage === "") return;
+          checkPercentage();
+     }, [completedPercentage]);
+
      const updateCompleteVideo = async () => {
           const newData = {
                ...course,
@@ -272,16 +297,16 @@ export default function MaterialPage({ params, community = true, url }) {
           const { ok } = await postMaterialCompleteAsync({
                materialId,
                classNum: material.claseNumero,
-          })
-          if(!ok) return
+          });
+          if (!ok) return;
           getCourseById({ id: courseId }).then((course) => {
-               setCompletedPercentage(course.porcentajeCompletado)
+               setCompletedPercentage(course.porcentajeCompletado);
           });
      };
 
      useEffect(() => {
           getCourseById({ id: courseId }).then((course) => {
-               setCompletedPercentage(course.porcentajeCompletado)
+               setCompletedPercentage(course.porcentajeCompletado);
                if (!community) {
                     setCourse(course);
                     return;
@@ -353,7 +378,7 @@ export default function MaterialPage({ params, community = true, url }) {
 
      return (
           <>
-               <MeetingModal isModalOpen={isModalOpen} closeModal={closeModal} />
+               <MeetingModal isModalOpen={isModalOpen} closeModal={closeModal} professorsModal={professorsModal} />
                <section
                     className={`bg-material flex max-h-[70vh] justify-center overflow-hidden text-white lg:max-h-[80vh] ${
                          secondBar ? "" : "lg:pl-0"
@@ -391,7 +416,12 @@ export default function MaterialPage({ params, community = true, url }) {
                                         {course.nombre}
                                    </h2>
                               </header>
-                              <CourseNav courseId={courseId} bubbleId={bubbleId} units={course.modulos} url={url} />
+                              <CourseNav
+                                   courseId={courseId}
+                                   bubbleId={bubbleId}
+                                   units={course.modulos}
+                                   url={url}
+                              />
                          </div>
                     </div>
                     <div
