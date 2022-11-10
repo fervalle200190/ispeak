@@ -257,31 +257,23 @@ export default function MaterialPage({ params, community = true, url }) {
      const checkPercentage = async () => {
           const docRef = query(collection(firestore, 'professors'))
           const docs = await getDocs(docRef)
-          const professorsList = []
+          const professorsData = []
           docs.forEach(doc => {
-               professorsList.push(doc.data())
+               professorsData.push(doc.data())
           });
-          const professorsByCourse = professorsList.filter((prof)=> prof.courseIds?.includes(parseInt(courseId)))
-          const professors = professorsByCourse.sort((a,b)=> a.percentage < b.percentage? 1: -1).find(e => e.percentage <= completedPercentage)
+          const professorsByCourse = professorsData.filter((prof)=> prof.courseIds?.includes(parseInt(courseId)))
+          const professorsList = professorsByCourse.sort((a,b)=> a.percentage < b.percentage? 1: -1).find(e => e.percentage <= completedPercentage)
           const checkRef = doc(firestore, 'meetings', `${USER_ID}`)
           const check = await getDoc(checkRef)
           const meetingsDone = check.data()
           if(!meetingsDone) {
                return
           }
-          if(meetingsDone?.meetingsToDo[professors.meetingId].isBooked) {
+          if(meetingsDone?.meetingsToDo[professorsList.meetingId].isBooked) {
                return
           }
-          const newProf = []
-          for (let i = 0; i < professors.professorsAmount; i++) {
-               newProf[i] = {
-                    name: professors[`profe-${i + 1}-name`],
-                    link: professors[`profe-${i + 1}-link`],
-                    photoUrl: professors[`profe-${i + 1}-photo`]
-               }
-          }
-          if(newProf.length <= 0) return
-          setProfessorsModal({meetingId: professors.meetingId, professors: newProf})
+          if(professorsList.professors.length <= 0) return
+          setProfessorsModal({meetingId: professorsList.meetingId, professors: professorsList.professors})
           setIsModalOpen(true)
      };
 

@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 
-export const CardModal = ({ name, photoUrl, link, onCardClick }) => {
+export const CardModal = ({ name, photo, link, onCardClick }) => {
      const onClick = () => {
           onCardClick(link);
      };
@@ -23,7 +23,7 @@ export const CardModal = ({ name, photoUrl, link, onCardClick }) => {
                }}
           >
                <div className="prof-card-container w-[70px] overflow-hidden rounded-full">
-                    <img src={photoUrl} alt={name} className="w-full" />
+                    <img src={photo} alt={name} className="w-full" />
                </div>
                <Typography variant="h6" color={"#1e3a8a"} fontWeight={500} ml={2}>
                     {name}
