@@ -10,7 +10,6 @@ export const MeetingModal = ({ isModalOpen, closeModal, professorsModal }) => {
      return (
           <Modal
                open={isModalOpen}
-               onClose={closeModal}
                sx={{ display: "flex", alignItems: "center" }}
           >
                <Grid
@@ -18,7 +17,7 @@ export const MeetingModal = ({ isModalOpen, closeModal, professorsModal }) => {
                     sx={{
                          backgroundColor: "#fff",
                          margin: "auto",
-                         width: "50%",
+                         width: {xs: '90%', md: '50%'},
                          borderRadius: "7px",
                          p: 4,
                          outline: "none",
@@ -36,7 +35,7 @@ export const MeetingModal = ({ isModalOpen, closeModal, professorsModal }) => {
                               Great job! Time to practice with a coach
                          </Typography>
                     </Grid>
-                    {appointmentShow && <CardsContainer professorsModal={professorsModal} />}
+                    {appointmentShow && <CardsContainer professorsModal={professorsModal} closeModal={closeModal} />}
                     {!appointmentShow && (
                          <Grid item xs={12} display="flex" justifyContent="center" marginTop={3}>
                               <Button variant="contained" color="error" onClick={closeModal}>

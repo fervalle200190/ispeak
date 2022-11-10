@@ -1,16 +1,54 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { CardModal } from "components/CardModal";
+import { firestore } from "../../firebase/credentials";
 import { useState } from "react";
+import { USER_ID } from "services/settings";
+import { useEffect } from "react";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 
-export const CardsContainer = ({ professorsModal }) => {
+export const CardsContainer = ({ professorsModal, closeModal }) => {
      const [professorSelected, setProfessorSelected] = useState("");
+     const [meetingsInfo, setMeetingsInfo] = useState("");
+     const [isLoading, setIsLoading] = useState(false);
      const onCardClick = (link) => {
           setProfessorSelected(link);
+     };
+
+     const getData = async () => {
+          const checkRef = doc(firestore, "meetings", `${USER_ID}`);
+          const check = await getDoc(checkRef);
+          const meetingsDone = check.data();
+          setMeetingsInfo(meetingsDone);
+     };
+
+     useEffect(() => {
+          getData();
+     }, []);
+
+     const onClickNoButton = () => {
+          closeModal();
+     };
+
+     const onClickYesButton = async () => {
+          const meetingToSend = {
+               ...meetingsInfo,
+               meetingsToDo: {
+                    ...meetingsInfo.meetingsToDo,
+                    [professorsModal.meetingId]: {
+                         isBooked: true,
+                    },
+               },
+          };
+          setIsLoading(true);
+          const docRef = doc(firestore, "meetings", `${USER_ID}`);
+          await setDoc(docRef, meetingToSend, { merge: true });
+          setIsLoading(false);
+          closeModal();
      };
      return (
           <Grid container>
                {professorSelected === "" ? (
-                    professorsModal.map((prof) => (
+                    professorsModal.professors.map((prof) => (
                          <CardModal key={prof.name} {...prof} onCardClick={onCardClick} />
                     ))
                ) : (
@@ -27,12 +65,21 @@ export const CardsContainer = ({ professorsModal }) => {
                               }}
                               id="zcal-invite"
                          ></iframe>
-                         <Typography variant='h6' color={"#1e3a8a"} sx={{width: '100%'}} >Did you book the appointment?</Typography>
-                         <Button variant="contained" color="error">
+                         <Typography variant="h6" color={"#1e3a8a"} sx={{ width: "100%" }}>
+                              Did you book the appointment?
+                         </Typography>
+                         <Button
+                              variant="contained"
+                              color="error"
+                              onClick={onClickNoButton}
+                              disabled={isLoading}
+                         >
                               No
                          </Button>
                          <Button
                               variant="contained"
+                              onClick={onClickYesButton}
+                              disabled={isLoading}
                               sx={{
                                    backgroundColor: "#5df99c",
                                    ml: 2,

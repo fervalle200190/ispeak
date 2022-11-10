@@ -19,8 +19,9 @@ import BubbleChat from "../../assets/burbuja-chat.svg";
 import { updateCourse } from "services/updateCourse";
 import { MeetingModal } from "components/MeetingModal";
 import { postMaterialCompleteAsync } from "services/postMaterialCompleteAsync";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { firestore } from "../../firebase/credentials";
+import { USER_ID } from "services/settings";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -236,7 +237,7 @@ export default function MaterialPage({ params, community = true, url }) {
      const { courseId, moduleId, materialId, bubbleId } = params;
      const [course, setCourse] = useState({});
      const [isModalOpen, setIsModalOpen] = useState(false);
-     const [professorsModal, setProfessorsModal] = useState([])
+     const [professorsModal, setProfessorsModal] = useState({})
      const [completedPercentage, setCompletedPercentage] = useState("");
      const [material, setMaterial] = useState({});
      const [isActive, setIsActive] = useState({
@@ -262,6 +263,15 @@ export default function MaterialPage({ params, community = true, url }) {
           });
           const professorsByCourse = professorsList.filter((prof)=> prof.courseIds?.includes(parseInt(courseId)))
           const professors = professorsByCourse.sort((a,b)=> a.percentage < b.percentage? 1: -1).find(e => e.percentage <= completedPercentage)
+          const checkRef = doc(firestore, 'meetings', `${USER_ID}`)
+          const check = await getDoc(checkRef)
+          const meetingsDone = check.data()
+          if(!meetingsDone) {
+               return
+          }
+          if(meetingsDone?.meetingsToDo[professors.meetingId].isBooked) {
+               return
+          }
           const newProf = []
           for (let i = 0; i < professors.professorsAmount; i++) {
                newProf[i] = {
@@ -271,7 +281,7 @@ export default function MaterialPage({ params, community = true, url }) {
                }
           }
           if(newProf.length <= 0) return
-          setProfessorsModal(newProf)
+          setProfessorsModal({meetingId: professors.meetingId, professors: newProf})
           setIsModalOpen(true)
      };
 
