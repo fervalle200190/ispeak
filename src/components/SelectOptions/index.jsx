@@ -1,6 +1,6 @@
 import { MenuItem, TextField } from "@mui/material";
 
-export const SelectOptions = ({ label, options, handleSelect, value, multiple = false }) => {
+export const SelectOptions = ({ label, options, handleSelect, value, multiple = false, disabled = false }) => {
      return (
           <>
                <TextField
@@ -8,6 +8,7 @@ export const SelectOptions = ({ label, options, handleSelect, value, multiple = 
                     fullWidth
                     value={value}
                     onChange={handleSelect}
+                    disabled={disabled}
                     SelectProps={{
                          multiple,
                          sx: {
