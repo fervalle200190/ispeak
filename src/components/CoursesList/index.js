@@ -6,7 +6,6 @@ import { v4 } from "uuid";
 
 export default function CourseList({ courses, url }) {
      const { profesor: professor = false } = useContext(CoursesContext);
-     console.log(courses)
      return (
           <div className="flex flex-wrap gap-5">
                {professor

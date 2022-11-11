@@ -266,15 +266,12 @@ export default function MaterialPage({ params, community = true, url }) {
           const checkRef = doc(firestore, 'meetings', `${USER_ID}`)
           const check = await getDoc(checkRef)
           const meetingsDone = check.data()
-          if(!meetingsDone) {
-               return
-          }
           if(meetingsDone?.meetingsToDo[professorsList.meetingId].isBooked) {
                return
           }
           if(professorsList.professors.length <= 0) return
           setProfessorsModal({meetingId: professorsList.meetingId, professors: professorsList.professors})
-          setIsModalOpen(true)
+          openModal()
      };
 
      useEffect(() => {

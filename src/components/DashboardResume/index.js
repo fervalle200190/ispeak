@@ -7,6 +7,7 @@ import { API_KEY } from "services/settings";
 import { collection, getDocs, query } from "firebase/firestore";
 import { firestore } from "../../firebase/credentials";
 import { getAllCoursesByUserAsync } from "services/getAllCoursesByUserAsync";
+import getUser from "services/getUser";
 
 const getData = async (courseId, moduleId) => {
      const docRef = collection(firestore, "modulos", `${courseId}`, "modulos");

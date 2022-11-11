@@ -37,6 +37,7 @@ import MaterialCommunityPage from "pages/MaterialCommunity";
 import { BubblePage } from "pages/BubblePage";
 import { collection, getDocs, query } from "firebase/firestore";
 import { firestore } from "./firebase/credentials";
+import { AddAsistancesPage } from "pages/AddAsistances";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -80,6 +81,7 @@ const RenderProfessorView = () => {
                                    {(params) => <MaterialCommunityPage url={'course-community'} params={params} />}
                               </Route>
                               <Route component={AssistancePage} path="/assistance" />
+                              <Route component={AddAsistancesPage} path="/assistance/ingresar" />
                               <Route component={FollowUpPage} path="/followup" />
                               <Route component={ProgressPage} path="/progress" />
                               <Route component={MyCommunityPage} path="/community" />
