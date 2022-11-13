@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 
-import getCourseById from "services/getCourseById";
-
 import "./styles.css";
 import CourseIcons from "components/CourseIcons";
 import { CoursesContext } from "context/coursesContext";
 import { collection, doc, Firestore, getDoc, getDocs, query } from "firebase/firestore";
 import firebaseApp, { firestore } from "../../firebase/credentials";
-import { BubblePage } from "pages/BubblePage";
+import { Box, Button } from "@mui/material";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
 function AccordionItem({ course, module, index, url }) {
      const [isActive, setActive] = useState(true);
@@ -54,12 +53,12 @@ function Module({ course, modules = [], url }) {
 
 export default function CoursePage({ params, url }) {
      const id = parseInt(params.courseId);
-     const [modules, setModules] = useState([])
+     const [modules, setModules] = useState([]);
      // const [course, setCourse] = useState({});
 
      const { courses } = useContext(CoursesContext) || [];
      const course = useMemo(() => {
-          console.log(courses)
+          console.log(courses);
           const courseSelected = courses.filter((course) => course.id === parseInt(id))[0];
           return {
                ...courseSelected,
@@ -81,7 +80,6 @@ export default function CoursePage({ params, url }) {
           getData();
      }, []);
 
-
      // useEffect(() => {
      //   getCourseById({ id }).then((course) => setCourse(course));
      //   const filterCourse = course.filter(
@@ -91,12 +89,20 @@ export default function CoursePage({ params, url }) {
      // }, [course, id]);
 
      return (
-          <section className="p-5 md:p-10 show-peace-page">
+          <section className="show-peace-page p-5 md:p-10">
                {course ? (
                     <>
-                         <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">
-                              {course.nombre || course.title}
-                         </h1>
+                         <Box display="flex" alignItems={"center"} gap={2}>
+                              <Link to={`/${url}/`}>
+                                   <ArrowBackIosNewRoundedIcon
+                                        fontSize="10px"
+                                        sx={{ cursor: "pointer", color: "#1e3a8a" }}
+                                   />
+                              </Link>
+                              <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">
+                                   {course.nombre || course.title}
+                              </h1>
+                         </Box>
                          <ol className="accordion flex flex-col gap-3 p-5">
                               {<Module url={url} course={course.id} modules={modules} />}
                          </ol>

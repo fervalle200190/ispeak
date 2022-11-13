@@ -4,6 +4,9 @@ import { firestore } from "../../firebase/credentials";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { BubbleCommunityModules } from "components/BubbleCommunityModules";
+import { Link } from "wouter";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import { Box, Button } from "@mui/material";
 
 export const BubblecommunityPage = ({ params, url }) => {
      const { courses } = useContext(CoursesContext) || [];
@@ -16,7 +19,7 @@ export const BubblecommunityPage = ({ params, url }) => {
           if (module.length <= 0) return [];
           if (!course?.getmodulos) return [];
           const newModules = course?.getmodulos?.filter((mod) => module.bubbleIds.includes(mod.id));
-          console.log(newModules, 'holaaaa')
+          console.log(newModules, "holaaaa");
           return newModules;
      }, [module, course]);
 
@@ -36,9 +39,17 @@ export const BubblecommunityPage = ({ params, url }) => {
 
      return (
           <section className="show-peace-page p-5 md:p-10">
-               <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">
-                    {module.moduleName}
-               </h1>
+               <Box display="flex" alignItems={"center"} gap={2}>
+                    <Link to={`/course-community/${params.courseId}`}>
+                         <ArrowBackIosNewRoundedIcon
+                              fontSize="10px"
+                              sx={{ cursor: "pointer", color: "#1e3a8a" }}
+                         />
+                    </Link>
+                    <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">
+                         {module.moduleName}
+                    </h1>
+               </Box>
                <div className="flex flex-wrap gap-10">
                     {modulesToUse.map((mod) => (
                          <BubbleCommunityModules

@@ -1,11 +1,24 @@
 import CourseCard from "components/CourseCard";
 import { CourseCardCommunity } from "components/CourseCardCommunity";
 import { CoursesContext } from "context/coursesContext";
-import { useContext } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { v4 } from "uuid";
 
-export default function CourseList({ courses, url }) {
+export default function CourseList({ courses: coursesList, url }) {
      const { profesor: professor = false } = useContext(CoursesContext);
+     const courses = useMemo(() => {
+          console.log(url)
+          if (url === "courses") {
+               return coursesList.filter((course) => course.planEstudio !== "Obligatorio");
+          }
+          if (url === "courses-paced") {
+               return coursesList.filter((course) => course.planEstudio === "Obligatorio");
+          }
+     }, [coursesList, url]);
+     useEffect(() => {
+          console.log(courses, "useeee");
+     }, [courses]);
+
      return (
           <div className="flex flex-wrap gap-5">
                {professor
@@ -20,6 +33,7 @@ export default function CourseList({ courses, url }) {
                                 duracion,
                                 profesor,
                                 porcentajeCompletado,
+                                planEstudio,
                            }) => {
                                 return (
                                      <CourseCard
@@ -31,6 +45,7 @@ export default function CourseList({ courses, url }) {
                                           duration={duracion}
                                           professor={profesor}
                                           progress={porcentajeCompletado}
+                                          planEstudio={planEstudio}
                                      />
                                 );
                            }
