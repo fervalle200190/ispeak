@@ -324,6 +324,9 @@ export default function MaterialPage({ params, community = true, url }) {
           setSecondBar(false);
      };
 
+     const coursesPacedURL = `/${url}/${courseId}/`
+     const normalURL = `/${url}/bubble/${courseId}/${bubbleId}`
+
      function handleNextMaterial() {
           const moduleI = parseInt(moduleId);
           const materialI = parseInt(materialId);
@@ -332,7 +335,7 @@ export default function MaterialPage({ params, community = true, url }) {
           const lastModule = course.modulos[course.modulos.length - 1];
           const lastClass = lastModule.clases[lastModule.clases.length - 1];
           if (materialI === lastClass.id) {
-               setLocation(`/courses`);
+               setLocation(`/${url}`);
                return;
           }
           const currentModuleIndex = course.modulos.findIndex((module) => module.id === moduleI);
@@ -344,12 +347,12 @@ export default function MaterialPage({ params, community = true, url }) {
                if (currentMaterialIndex === currentModule.clases.length - 1) {
                     const nextModule = course.modulos[currentModuleIndex + 1];
                     setLocation(
-                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${bubbleId}`
+                         `/${url}/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${community ? bubbleId: ''}`
                     );
                } else {
                     const nextMaterial = currentModule.clases[currentMaterialIndex + 1];
                     setLocation(
-                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${bubbleId}`
+                         `/${url}/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${community ? bubbleId: ''}`
                     );
                }
           } else {
@@ -360,7 +363,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          classNum: material.claseNumero,
                     });
                     setLocation(
-                         `/courses/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${bubbleId}`
+                         `/${url}/${courseId}/module/${nextModule.id}/material/${nextModule.clases[0].id}/${community ? bubbleId: ''}`
                     );
                } else {
                     const nextMaterial = currentModule.clases[currentMaterialIndex + 1];
@@ -369,7 +372,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          classNum: material.claseNumero,
                     });
                     setLocation(
-                         `/courses/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${bubbleId}`
+                         `/${url}/${courseId}/module/${moduleId}/material/${nextMaterial.id}/${community ? bubbleId: ''}`
                     );
                }
           }
@@ -402,7 +405,7 @@ export default function MaterialPage({ params, community = true, url }) {
                          <div className="overflow-hidden">
                               <header className="flex max-h-[20vh] flex-col gap-5 pt-2 pl-5">
                                    <Link
-                                        href={`/${url}/bubble/${courseId}/${bubbleId}`}
+                                        href={`${url === 'courses-paced'? coursesPacedURL: normalURL}`}
                                         className="a-icon flex items-center gap-2"
                                    >
                                         <CourseIcons name="back" /> {secondBar && "My classes"}
@@ -418,6 +421,7 @@ export default function MaterialPage({ params, community = true, url }) {
                               <CourseNav
                                    courseId={courseId}
                                    bubbleId={bubbleId}
+                                   community={community}
                                    units={course.modulos}
                                    url={url}
                               />

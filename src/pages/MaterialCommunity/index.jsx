@@ -406,6 +406,7 @@ export default function MaterialCommunityPage({ params, community = true, url })
                               <CourseNav
                                    courseId={courseId}
                                    bubbleId={bubbleId}
+                                   community={community}
                                    units={modules}
                                    url={url}
                               />

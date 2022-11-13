@@ -40,6 +40,7 @@ import { firestore } from "./firebase/credentials";
 import { AddAsistancesPage } from "pages/AddAsistances";
 import { getAllCoursesAsync } from "services/getAllCoursesAsync";
 import { BubblecommunityPage } from "pages/BubbleCommunity";
+import CoursePacedPage from "pages/CoursePaced";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -121,7 +122,6 @@ const RenderStudentView = () => {
 
      useEffect(() => {
           getAllCoursesByUser(USER.id).then((response) => {
-          console.log(response, 'holaaaa')
                setCourses(response);
           });
      }, [USER.id]);
@@ -154,7 +154,7 @@ const RenderStudentView = () => {
                                    </Route>
                                    <Route path="/courses-paced/:courseId">
                                         {(params) => (
-                                             <CoursePage url="courses-paced" params={params} />
+                                             <CoursePacedPage url="courses-paced" params={params} />
                                         )}
                                    </Route>
                                    <Route path="/courses-paced/bubble/:courseId/:moduleId">
@@ -170,7 +170,7 @@ const RenderStudentView = () => {
                                              <MaterialPage url={"courses"} params={params} />
                                         )}
                                    </Route>
-                                   <Route path="/courses-paced/:courseId/module/:moduleId/material/:materialId/:bubbleId">
+                                   <Route path="/courses-paced/:courseId/module/:moduleId/material/:materialId">
                                         {(params) => (
                                              <MaterialPage
                                                   url={"courses-paced"}

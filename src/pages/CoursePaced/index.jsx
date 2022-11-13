@@ -13,7 +13,7 @@ const MaterialList = ({ course, module }) => {
                <li key={clase.id}>
                     <Link
                          className="flex h-64 w-56 flex-col rounded-xl border border-gray-300 bg-white shadow-md"
-                         href={`/courses/${course}/module/${module.id}/material/${clase.id}`}
+                         href={`/courses-paced/${course}/module/${module.id}/material/${clase.id}`}
                     >
                          <div className="relative overflow-hidden rounded-t-xl">
                               <img
@@ -95,7 +95,7 @@ function Module({ course, modules = [] }) {
 export default function CoursePacedPage({ params }) {
      const id = params.courseId;
      // const [course, setCourse] = useState({});
-     const courses = useContext(CoursesContext) || {};
+     const { courses } = useContext(CoursesContext) || {};
      const course = courses.filter((course) => course.id === parseInt(id))[0];
 
      // useEffect(() => {

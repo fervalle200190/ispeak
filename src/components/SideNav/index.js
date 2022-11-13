@@ -42,12 +42,12 @@ const NAV_ITEMS = {
       icon: <SideNavIcons name="profile" />,
       url: "/profile",
     },
-    {
-      id:5,
-      title: 'Calendar',
-      icon: <SideNavIcons name='videocall' />,
-      url: '/calendar'
-    }
+    // {
+    //   id:5,
+    //   title: 'Calendar',
+    //   icon: <SideNavIcons name='videocall' />,
+    //   url: '/calendar'
+    // }
   ],
   professor: [
     {

@@ -7,18 +7,13 @@ import { v4 } from "uuid";
 export default function CourseList({ courses: coursesList, url }) {
      const { profesor: professor = false } = useContext(CoursesContext);
      const courses = useMemo(() => {
-          console.log(url)
-          if (url === "courses") {
+          if (url === "courses" || url === 'course-community') {
                return coursesList.filter((course) => course.planEstudio !== "Obligatorio");
           }
           if (url === "courses-paced") {
                return coursesList.filter((course) => course.planEstudio === "Obligatorio");
           }
      }, [coursesList, url]);
-     useEffect(() => {
-          console.log(courses, "useeee");
-     }, [courses]);
-
      return (
           <div className="flex flex-wrap gap-5">
                {professor
