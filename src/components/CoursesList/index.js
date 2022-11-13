@@ -9,8 +9,8 @@ export default function CourseList({ courses, url }) {
      return (
           <div className="flex flex-wrap gap-5">
                {professor
-                    ? courses.map(({ title, id }) => (
-                           <CourseCardCommunity key={v4()} id={id} url={url} title={title} />
+                    ? courses.map(({ nombre, id }) => (
+                           <CourseCardCommunity key={v4()} id={id} url={url} title={nombre} />
                       ))
                     : courses.map(
                            ({

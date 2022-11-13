@@ -7,6 +7,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import { getAllProfessorsCombo } from "services/getAllProfessorsCombo";
 import { getAllStudentsCombo } from "services/getAllStudentsCombo";
+import { getAllUsersAsync } from "services/getAllUsersAsync";
 import { getModuleByCourseIdAsync } from "services/getModuleByCourseIdAsync";
 import { postAttendance } from "services/postAttendance";
 import { USER_ID } from "services/settings";
@@ -81,6 +82,7 @@ const customSelectStyles = {
      input: (provided, state) => ({
           ...provided,
           height: "47px",
+          outline: state.isHovering ? "1px solid #000" : "none",
      }),
      menu: (provided, state) => ({
           ...provided,
@@ -94,11 +96,11 @@ export const AddAsistancesPage = () => {
      const [valueSelected, setValueSelected] = useState(initialSelected);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [selectsData, setSelectsData] = useState(initialList);
-     const [studentSelected, setStudentSelected] = useState('')
+     const [studentSelected, setStudentSelected] = useState("");
 
-     const onStudentSelect = (e)=> {
-        setStudentSelected(e)
-     }
+     const onStudentSelect = (e) => {
+          setStudentSelected(e);
+     };
 
      const onValueSelected = (e, selector) => {
           setValueSelected({
@@ -122,14 +124,15 @@ export const AddAsistancesPage = () => {
      }, [courses]);
 
      const getData = async () => {
-          const { students } = await getAllStudentsCombo();
-          const { professors } = await getAllProfessorsCombo();
+          const { users } = await getAllUsersAsync();
+          const professors = users.filter((user) => user.rol === "Profesor");
+          const students = users.filter((user) => user.rol === "Alumno");
           const professorsParsed = professors.map((prof) => ({
-               label: prof.name,
+               label: prof.nombre,
                value: prof.id,
           }));
           const studentsParsed = students.map((student) => ({
-               label: student.name,
+               label: `${student.nombre} - ${student.email}`,
                value: student.id,
           }));
           setSelectsData({
@@ -184,7 +187,7 @@ export const AddAsistancesPage = () => {
           });
           onResetForm();
           setValueSelected(initialSelected);
-          setStudentSelected('')
+          setStudentSelected("");
      };
 
      useEffect(() => {
@@ -213,7 +216,7 @@ export const AddAsistancesPage = () => {
                                    styles={customSelectStyles}
                                    value={studentSelected}
                                    onChange={(e) => {
-                                        onStudentSelect(e)
+                                        onStudentSelect(e);
                                    }}
                               />
                          </Grid>

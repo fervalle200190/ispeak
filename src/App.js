@@ -38,16 +38,21 @@ import { BubblePage } from "pages/BubblePage";
 import { collection, getDocs, query } from "firebase/firestore";
 import { firestore } from "./firebase/credentials";
 import { AddAsistancesPage } from "pages/AddAsistances";
+import { getAllCoursesAsync } from "services/getAllCoursesAsync";
+import { BubblecommunityPage } from "pages/BubbleCommunity";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
      const { showBar } = useContext(SizeContext);
      const [courses, setCourses] = useState([]);
 
+     const getData = async () => {
+          const courses = await getAllCoursesAsync();
+          setCourses(courses);
+     };
+
      useEffect(() => {
-          getAllCourses().then((response) => {
-               setCourses(response);
-          });
+          getData();
      }, []);
 
      return (
@@ -72,13 +77,28 @@ const RenderProfessorView = () => {
                                         />
                                    )}
                               </Route>
-                              <Route path="/course-community/:courseId">
+                              {/* <Route path="/course-community/:courseId">
                                    {(params) => (
                                         <ModuleCommunityPage url="course-community" params={params} />
                                    )}
+                              </Route> */}
+                              <Route path="/course-community/:courseId">
+                                   {(params) => (
+                                        <CoursePage url={"course-community"} params={params} />
+                                   )}
                               </Route>
-                              <Route path="/course-community/:courseId/module/:moduleId/material/:materialId">
-                                   {(params) => <MaterialCommunityPage url={'course-community'} params={params} />}
+                              <Route path="/course-community/bubble/:courseId/:moduleId">
+                                   {(params) => (
+                                        <BubblecommunityPage params={params} url={"course-community"} />
+                                   )}
+                              </Route>
+                              <Route path="/course-community/:courseId/module/:moduleId/material/:materialId/:bubbleId">
+                                   {(params) => (
+                                        <MaterialCommunityPage
+                                             url={"course-community"}
+                                             params={params}
+                                        />
+                                   )}
                               </Route>
                               <Route component={AssistancePage} path="/assistance" />
                               <Route component={AddAsistancesPage} path="/assistance/ingresar" />
@@ -99,7 +119,6 @@ const RenderStudentView = () => {
      const [courses, setCourses] = useState([]);
      const { showBar } = useContext(SizeContext);
 
-
      useEffect(() => {
           getAllCoursesByUser(USER.id).then((response) => {
                setCourses(response);
@@ -108,7 +127,7 @@ const RenderStudentView = () => {
 
      return (
           <>
-               <CoursesContext.Provider value={{courses}}>
+               <CoursesContext.Provider value={{ courses }}>
                     <div
                          className={`App tranisition-all flex flex-col items-center ${
                               showBar ? "md:ml-60" : "md:ml-10"
@@ -138,17 +157,25 @@ const RenderStudentView = () => {
                                         )}
                                    </Route>
                                    <Route path="/courses-paced/bubble/:courseId/:moduleId">
-                                        {(params)=> <BubblePage params={params} url={'courses-paced'} />}
+                                        {(params) => (
+                                             <BubblePage params={params} url={"courses-paced"} />
+                                        )}
                                    </Route>
                                    <Route path="/courses/bubble/:courseId/:moduleId">
-                                        {(params)=> <BubblePage params={params} url={'courses'} />}
+                                        {(params) => <BubblePage params={params} url={"courses"} />}
                                    </Route>
                                    <Route path="/courses/:courseId/module/:moduleId/material/:materialId/:bubbleId">
-                                        {(params) => <MaterialPage url={'courses'} params={params} />}
+                                        {(params) => (
+                                             <MaterialPage url={"courses"} params={params} />
+                                        )}
                                    </Route>
                                    <Route path="/courses-paced/:courseId/module/:moduleId/material/:materialId/:bubbleId">
                                         {(params) => (
-                                             <MaterialPage url={'courses-paced'} community={false} params={params} />
+                                             <MaterialPage
+                                                  url={"courses-paced"}
+                                                  community={false}
+                                                  params={params}
+                                             />
                                         )}
                                    </Route>
                                    <Route component={AdditionalMaterialPage} path="/refuerzo" />

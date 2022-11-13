@@ -59,10 +59,11 @@ export default function CoursePage({ params, url }) {
 
      const { courses } = useContext(CoursesContext) || [];
      const course = useMemo(() => {
+          console.log(courses)
           const courseSelected = courses.filter((course) => course.id === parseInt(id))[0];
           return {
                ...courseSelected,
-               modulos: courseSelected?.modulos.filter((mod) => mod.nombre.includes(`Content`)),
+               modulos: courseSelected?.modulos?.filter((mod) => mod.nombre.includes(`Content`)),
           };
      }, [courses]);
 
@@ -94,7 +95,7 @@ export default function CoursePage({ params, url }) {
                {course ? (
                     <>
                          <h1 className="font-Barlow text-primary mr-5 text-2xl font-semibold">
-                              {course.nombre}
+                              {course.nombre || course.title}
                          </h1>
                          <ol className="accordion flex flex-col gap-3 p-5">
                               {<Module url={url} course={course.id} modules={modules} />}
