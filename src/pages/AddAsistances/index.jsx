@@ -58,6 +58,7 @@ const initialSelected = {
      moduloSelected: "",
      courseSelected: "",
      classSelected: "",
+     presentSelected: ''
 };
 
 const initialList = {
@@ -77,6 +78,11 @@ const errorSnackbar = {
      severity: "error",
      message: "Ha ocurrido un error",
 };
+
+const optionPresence = [
+     { label: "Presente", value: true },
+     { label: "Ausente", value: false },
+];
 
 const customSelectStyles = {
      input: (provided, state) => ({
@@ -118,7 +124,7 @@ export const AddAsistancesPage = () => {
 
      const coursesParsed = useMemo(() => {
           return courses.map((course) => ({
-               label: course.title,
+               label: course.nombre,
                value: course.id,
           }));
      }, [courses]);
@@ -160,6 +166,7 @@ export const AddAsistancesPage = () => {
                valueSelected.classSelected === "" ||
                valueSelected.courseSelected === "" ||
                valueSelected.moduloSelected === "" ||
+               valueSelected.presentSelected === '' ||
                studentSelected === "" ||
                observaciones === "" ||
                date === ""
@@ -235,6 +242,14 @@ export const AddAsistancesPage = () => {
                                    value={selectsData.professorsList.length <= 0 ? "" : USER_ID}
                                    handleSelect={(e) => onValueSelected(e, "profesorSelected")}
                                    disabled={true}
+                              />
+                         </Grid>
+                         <Grid item xs={12} sx={{ m: 1 }}>
+                              <SelectOptions
+                                   options={optionPresence}
+                                   label={"Asistencia"}
+                                   value={valueSelected.presentSelected}
+                                   handleSelect={(e) => onValueSelected(e, "presentSelected")}
                               />
                          </Grid>
                          <Grid item xs={12} sx={{ m: 1 }}>

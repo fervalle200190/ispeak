@@ -122,6 +122,7 @@ const RenderStudentView = () => {
 
      useEffect(() => {
           getAllCoursesByUser(USER.id).then((response) => {
+               console.log(response)
                setCourses(response);
           });
      }, [USER.id]);

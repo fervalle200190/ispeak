@@ -6,6 +6,7 @@ export const processAttendance = ({
      classSelected,
      observaciones,
      date,
+     presentSelected
 }) => {
      return {
           alumnoId: studentSelected,
@@ -13,7 +14,7 @@ export const processAttendance = ({
           moduloId: moduloSelected,
           profesorId: profesorSelected,
           fecha: date,
-          presente: "true",
+          presente: presentSelected,
           reprogramar: "true",
           observaciones,
           fechaCarga: "2022-10-05T14:48:00.000Z",
