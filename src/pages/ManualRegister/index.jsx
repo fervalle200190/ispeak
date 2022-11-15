@@ -1,6 +1,12 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { SelectOptions } from "components/SelectOptions";
+import { SnackBarActions } from "components/SnackBarActions";
 import { useForm } from "hooks/useForm";
+import { useState, useEffect } from "react";
+import Select from "react-select";
+import { postManualRegister } from "services/postManualRegister";
+import { processPlans } from "utils/processPlans";
+import { getPlans } from "../../services/getPlans";
 
 const initialForm = {
      nombre: "",
@@ -11,11 +17,77 @@ const initialForm = {
      descripcion: "",
 };
 
+const initialSnackBar = {
+     isSnackBarOpen: false,
+     severity: "success",
+     message: "Alumno registrado correctamente",
+};
+
+const errorSnackbar = {
+     isSnackBarOpen: true,
+     severity: "error",
+     message: "Ha ocurrido un error",
+};
+
 export const ManualRegisterPage = () => {
-     const { nombre, apellido, correo, paymentId, amount, descripcion, onInputChange } =
-          useForm(initialForm);
-     const onSubmit = (e) => {
+     const {
+          nombre,
+          apellido,
+          correo,
+          paymentId,
+          amount,
+          descripcion,
+          onInputChange,
+          formState,
+          onResetForm,
+     } = useForm(initialForm);
+     const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
+     const [plansList, setPlansList] = useState([]);
+     const [plansRaw, setPlansRaw] = useState([]);
+     const [planSelected, setPlanSelected] = useState("");
+
+     const getInfo = async () => {
+          const plans = await getPlans();
+          const newList = plans.filter((plan) => plan.pais.nombre === "Internacional");
+          setPlansRaw(newList);
+          setPlansList(newList.map((plan) => ({ label: plan.nombre, value: plan.id })));
+     };
+     useEffect(() => {
+          getInfo();
+     }, []);
+
+     const closeSnackbar = () => {
+          setSnackBarInfo({
+               ...snackBarInfo,
+               isSnackBarOpen: false,
+          });
+     };
+
+     const onPlanSelectedChange = (e) => {
+          setPlanSelected(e.target.value);
+     };
+
+     const onSubmit = async (e) => {
           e.preventDefault();
+          if (
+               nombre === "" ||
+               apellido === "" ||
+               correo === "" ||
+               paymentId === "" ||
+               amount === "" ||
+               planSelected === ""
+          ) {
+               return setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
+          }
+          const res = await postManualRegister(
+               processPlans({ ...formState, plansRaw, planSelected })
+          );
+          if (!res.ok) {
+               return setSnackBarInfo({ ...errorSnackbar, message: res.errorMessage })
+          }
+          onResetForm();
+          setPlanSelected();
+          setSnackBarInfo({ ...initialSnackBar, isSnackBarOpen: true });
      };
      return (
           <>
@@ -102,10 +174,12 @@ export const ManualRegisterPage = () => {
                               />
                          </Grid>
                          <Grid item xs={12} my={1}>
-                              <SelectOptions label={"Plan a contratar"} options={[]} />
-                         </Grid>
-                         <Grid item xs={12} my={1}>
-                              <SelectOptions label={"Pais"} options={[]} />
+                              <SelectOptions
+                                   options={plansList}
+                                   label="Plan a contratar"
+                                   value={planSelected}
+                                   handleSelect={onPlanSelectedChange}
+                              />
                          </Grid>
                          <Grid item my={2}>
                               <Button variant="outlined" type="submit">
@@ -114,6 +188,7 @@ export const ManualRegisterPage = () => {
                          </Grid>
                     </Box>
                </Grid>
+               <SnackBarActions handleSnackbar={closeSnackbar} {...snackBarInfo} />
           </>
      );
 };

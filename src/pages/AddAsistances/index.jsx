@@ -5,8 +5,6 @@ import { CoursesContext } from "context/coursesContext";
 import { useForm } from "hooks/useForm";
 import { useContext, useEffect, useMemo, useState } from "react";
 import Select from "react-select";
-import { getAllProfessorsCombo } from "services/getAllProfessorsCombo";
-import { getAllStudentsCombo } from "services/getAllStudentsCombo";
 import { getAllUsersAsync } from "services/getAllUsersAsync";
 import { getModuleByCourseIdAsync } from "services/getModuleByCourseIdAsync";
 import { postAttendance } from "services/postAttendance";
