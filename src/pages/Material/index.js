@@ -327,7 +327,7 @@ export default function MaterialPage({ params, community = true, url }) {
      const coursesPacedURL = `/${url}/${courseId}/`
      const normalURL = `/${url}/bubble/${courseId}/${bubbleId}`
 
-     function handleNextMaterial() {
+     async function handleNextMaterial() {
           const moduleI = parseInt(moduleId);
           const materialI = parseInt(materialId);
           const currentModule = course.modulos.find(({ id }) => id === moduleI);
@@ -335,7 +335,13 @@ export default function MaterialPage({ params, community = true, url }) {
           const lastModule = course.modulos[course.modulos.length - 1];
           const lastClass = lastModule.clases[lastModule.clases.length - 1];
           if (materialI === lastClass.id) {
-               setLocation(`/${url}`);
+               const { ok } = await postMaterialCompleteAsync({
+                    materialId,
+                    classNum: material.claseNumero,
+               });
+               const bubbleURL = `/${url}/bubble/${courseId}/${bubbleId}`
+               const normalURL = `/${url}/${courseId}`
+               setLocation(url === 'courses'? bubbleURL: normalURL);
                return;
           }
           const currentModuleIndex = course.modulos.findIndex((module) => module.id === moduleI);
