@@ -34,7 +34,7 @@ export default function CourseCard({
                     <h3 className="font-Barlow text-primary line-clamp-2 mb-1 font-bold">
                          {nombre}
                     </h3>
-                    <small className="text-xs text-gray-300">Professor</small>
+                    <small className="text-xs text-gray-300">{profesores.length > 1? 'Profesores': 'Profesor'}</small>
                     <div className="text-primary flex justify-between text-xs">
                          <span>{profesores.length}</span>
                          {/* <span>{duracion}</span> */}
