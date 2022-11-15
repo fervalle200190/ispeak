@@ -2,16 +2,16 @@ import { Link } from "wouter";
 
 export default function CourseCard({
      id,
-     title,
-     students,
-     duration,
-     professor,
-     progress,
+     nombre,
+     cantidadAlumnos,
+     duracion,
+     profesores,
+     porcentajeCompletado,
      url,
      planEstudio,
 }) {
-     if (progress > 100) {
-          progress = 100;
+     if (porcentajeCompletado > 100) {
+          porcentajeCompletado = 100;
      }
 
      return (
@@ -23,21 +23,21 @@ export default function CourseCard({
                     <div className="bg-primary/30 h-5 w-full rounded-xl">
                          <div
                               className="bg-primary flex h-full min-w-fit items-center rounded-xl px-2 text-right text-gray-50"
-                              style={{ width: progress + "%" }}
+                              style={{ width: porcentajeCompletado + "%" }}
                          >
-                              <span className="w-full">{progress}%</span>
+                              <span className="w-full">{porcentajeCompletado}%</span>
                          </div>
                     </div>
                </div>
                <div className="px-3 pb-2">
-                    <small className="text-xs text-gray-400">{students} students</small>
+                    <small className="text-xs text-gray-400">{cantidadAlumnos} students</small>
                     <h3 className="font-Barlow text-primary line-clamp-2 mb-1 font-bold">
-                         {title}
+                         {nombre}
                     </h3>
                     <small className="text-xs text-gray-300">Professor</small>
                     <div className="text-primary flex justify-between text-xs">
-                         <span>{professor}</span>
-                         <span>{duration}</span>
+                         <span>{profesores.length}</span>
+                         {/* <span>{duracion}</span> */}
                     </div>
                </div>
           </Link>

@@ -41,6 +41,7 @@ import { AddAsistancesPage } from "pages/AddAsistances";
 import { getAllCoursesAsync } from "services/getAllCoursesAsync";
 import { BubblecommunityPage } from "pages/BubbleCommunity";
 import CoursePacedPage from "pages/CoursePaced";
+import { ManualRegisterPage } from "pages/ManualRegister";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -213,6 +214,7 @@ function App() {
                          <Switch>
                               <Route component={LoginPage} path="/" />
                               <Route component={PasswordPage} path="/password" />
+                              <Route component={ManualRegisterPage} path="/manual-register" />
                               <Route component={ExternalRegisterPage} path="/register/:paymentId" />
                               <Route
                                    component={PreSignUp}

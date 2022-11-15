@@ -20,27 +20,12 @@ export default function CourseList({ courses: coursesList, url }) {
                     ? courses.map(({ nombre, id }) => (
                            <CourseCardCommunity key={v4()} id={id} url={url} title={nombre} />
                       ))
-                    : courses.map(
-                           ({
-                                id,
-                                nombre,
-                                cantidadAlumnos,
-                                duracion,
-                                profesor,
-                                porcentajeCompletado,
-                                planEstudio,
-                           }) => {
+                    : courses.map((course) => {
                                 return (
                                      <CourseCard
                                           key={v4()}
-                                          id={id}
                                           url={url}
-                                          title={nombre}
-                                          students={cantidadAlumnos}
-                                          duration={duracion}
-                                          professor={profesor}
-                                          progress={porcentajeCompletado}
-                                          planEstudio={planEstudio}
+                                          {...course}
                                      />
                                 );
                            }
