@@ -25,7 +25,20 @@ export const CardsContainer = ({ professorsModal, closeModal }) => {
           getData();
      }, []);
 
-     const onClickNoButton = () => {
+     const onClickNoButton = async () => {
+          const meetingToSend = {
+               ...meetingsInfo,
+               meetingsToDo: {
+                    ...meetingsInfo.meetingsToDo,
+                    [professorsModal.meetingId]: {
+                         isBooked: false,
+                    },
+               },
+          };
+          setIsLoading(true);
+          const docRef = doc(firestore, "meetings", `${USER_ID}`);
+          await setDoc(docRef, meetingToSend, { merge: true });
+          setIsLoading(false);
           closeModal();
      };
 

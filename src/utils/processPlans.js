@@ -13,7 +13,7 @@ export const processPlans = ({
           pasarela: "",
           countryId: planChosen.paisId,
           countryISO: planChosen.pais.iso,
-          transdate: "",
+          transdate: new Date().toISOString(),
           payment_id: paymentId,
           hash_id: "",
           status: "",

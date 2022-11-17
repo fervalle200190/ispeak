@@ -6,13 +6,19 @@
           <title>ispeak app</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
-          <meta name="description" content="La primera comunidad para que hables y aprendas inglés. Accede a los mejores sueldos como profesional bilingüe." />
+          <meta
+               name="description"
+               content="La primera comunidad para que hables y aprendas inglés. Accede a los mejores sueldos como profesional bilingüe."
+          />
           <meta property="og:title" content="ispeak app" />
           <meta
                property="og:description"
                content="La primera comunidad para que hables y aprendas inglés. Accede a los mejores sueldos como profesional bilingüe."
           />
-          <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/ispeak-f31e1.appspot.com/o/Group%2017%20(1).png?alt=media&token=318f2505-34c9-42b5-9e9d-7db79e4ff385" />
+          <meta
+               property="og:image"
+               content="https://firebasestorage.googleapis.com/v0/b/ispeak-f31e1.appspot.com/o/Group%2017%20(1).png?alt=media&token=318f2505-34c9-42b5-9e9d-7db79e4ff385"
+          />
           <link rel="apple-touch-icon" href="%PUBLIC_URL%/ispeak-icono-02.png" />
           <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -24,6 +30,18 @@
                rel="stylesheet"
                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <script>
+               (function (w, d, s, l, i) {
+                    w[l] = w[l] || [];
+                    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+                    var f = d.getElementsByTagName(s)[0],
+                         j = d.createElement(s),
+                         dl = l != "dataLayer" ? "&l=" + l : "";
+                    j.async = true;
+                    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+                    f.parentNode.insertBefore(j, f);
+               })(window, document, "script", "dataLayer", "GTM-TG9M3CJ");
+          </script>
           <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -56,5 +74,13 @@
                nomodule
                src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
           ></script>
+          <noscript
+               ><iframe
+                    src="https://www.googletagmanager.com/ns.html?id=GTM-TG9M3CJ"
+                    height="0"
+                    width="0"
+                    style="display: none; visibility: hidden"
+               ></iframe
+          ></noscript>
      </body>
 </html>

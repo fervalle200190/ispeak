@@ -1,14 +1,38 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import { AppointmentProfessor } from "components/AppointmentProfessor";
+import { MeetingList } from "components/MeetingList";
+import { ProfessorsList } from "components/ProfessorsList";
+import { useState } from "react";
 
-export const ProfessorCard = ({ name, profilePhoto, link, activeLink, handleActiveLink }) => {
+export const ProfessorCard = ({ professors, meetingId, meetingSelected, setMeetingSelected }) => {
+     const [linkSelected, setLinkSelected] = useState("");
+     const [isBooked, setIsBooked] = useState(false);
+
+     const height = linkSelected !== "" ? 500 : meetingId === meetingSelected ? 200 : 69;
+
+     const onClickButton = (link) => {
+          setLinkSelected(link);
+     };
+
+     const onBooked = () => {
+          setLinkSelected("");
+          setIsBooked(true);
+          setMeetingSelected("");
+     };
+
+     const onClickSchedule = () => {
+          if(isBooked) return
+          setMeetingSelected(meetingId === meetingSelected ? "" : meetingId);
+     };
      return (
           <>
                <Grid
                     container
-                    maxWidth={500}
+                    maxWidth={600}
+                    height={height}
                     alignItems="center"
                     justifyContent={"space-between"}
-                    onClick={() => handleActiveLink(link)}
+                    onClick={onClickSchedule}
                     sx={{
                          boxShadow: "0px 0px 10px #cfcfcf",
                          borderRadius: "7px",
@@ -17,45 +41,33 @@ export const ProfessorCard = ({ name, profilePhoto, link, activeLink, handleActi
                          ":hover": { boxShadow: "0px 0px 20px #bfbfbf" },
                          transition: "all 0.2s ease-in-out",
                          my: 3,
+                         overflowY: "auto",
                     }}
                >
-                    <Grid item flexDirection={"row"}>
-                         <Box
-                              style={{
-                                   width: 60,
-                                   height: 60,
-                                   borderRadius: "50%",
-                                   overflow: "hidden",
-                              }}
-                         >
-                              <img src={profilePhoto} alt="name" style={{ width: "100%" }} />
-                         </Box>
-                    </Grid>
-                    <Grid item>
+                    {!isBooked &&
+                         (linkSelected === "" ? (
+                              meetingSelected !== meetingId ? (
+                                   <MeetingList meetingId={meetingId} />
+                              ) : (
+                                   <ProfessorsList
+                                        professors={professors}
+                                        onClickButton={onClickButton}
+                                   />
+                              )
+                         ) : (
+                              <AppointmentProfessor
+                                   linkSelected={linkSelected}
+                                   onClickButton={onClickButton}
+                                   meetingId={meetingId}
+                                   onBooked={onBooked}
+                              />
+                         ))}
+                    {isBooked && (
                          <Typography color="#0d2e68" fontWeight={500}>
-                              {name}
+                              You've scheduled your meeting !!
                          </Typography>
-                    </Grid>
-                    <Grid item>
-                         <Button variant="contained" sx={{ backgroundColor: "#0d2e68" }}>
-                              Agendar reunion
-                         </Button>
-                    </Grid>
+                    )}
                </Grid>
-               {activeLink === link && (
-                    <iframe
-                         src={link}
-                         loading="lazy"
-                         style={{
-                              border: "none",
-                              minWidth: "320px",
-                              minHeight: "544px",
-                              height: "966px",
-                              width: "100%",
-                         }}
-                         id="zcal-invite"
-                    ></iframe>
-               )}
           </>
      );
 };
