@@ -42,7 +42,7 @@ function MaterialAboutSection({ isActive = true, moduleId }) {
      return isActive && about ? (
           <div className="w-full px-10 py-5">
                <h4 className="font text-primary text-lg font-semibold">Content</h4>
-               <p>{about.contenido}</p>
+               <p dangerouslySetInnerHTML={{__html: about.contenido}}></p>
                <h4 className="font text-primary mt-5 text-lg font-semibold">Goals</h4>
                <p>{about.objetivos}</p>
           </div>
