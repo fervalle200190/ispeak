@@ -452,8 +452,7 @@ export default function MaterialPage({ params, community = true, url }) {
                                    onEnded={updateCompleteVideo}
                               />
                               <div className="flex w-full items-center justify-between gap-2 p-5">
-                                   <h1 className="font-Barlow text-2xl font-semibold text-white">
-                                        {material.nombre}
+                                   <h1 className="font-Barlow text-2xl font-semibold text-white" dangerouslySetInnerHTML={{__html: material.nombre}} >
                                    </h1>
                                    <button
                                         className="bg-accent text-primary w-40 rounded-3xl p-2"
