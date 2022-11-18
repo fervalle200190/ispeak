@@ -305,14 +305,23 @@ export default function MaterialPage({ params, community = true, url }) {
 
      useEffect(() => {
           getCourseById({ id: courseId }).then((course) => {
+               const orderedCourse = {
+                    ...course,
+                    modulos: course.modulos.map((mod)=> {
+                         return {
+                              ...mod,
+                              clases: mod.clases.sort((a,b)=> a.claseNumero > b.claseNumero? 1: -1)
+                         }
+                    })
+               }
                setCompletedPercentage(course.porcentajeCompletado);
                if (!community) {
-                    setCourse(course);
+                    setCourse(orderedCourse);
                     return;
                }
                setCourse({
-                    ...course,
-                    modulos: course.modulos.filter((modu) => modu.id.toString() === moduleId),
+                    ...orderedCourse,
+                    modulos: orderedCourse.modulos.filter((modu) => modu.id.toString() === moduleId),
                });
           });
           getMaterialById({ id: materialId }).then((material) => setMaterial(material));

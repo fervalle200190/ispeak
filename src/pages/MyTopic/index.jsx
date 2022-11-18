@@ -170,7 +170,7 @@ const StudentsPage = ({ materialId }) => {
                     }`}
                >
                     <div
-                         className="min-h-full w-full overflow-y-scroll pb-[87px]"
+                         className="min-h-[400px] w-full overflow-y-scroll pb-[87px]"
                          ref={chatDiv}
                     >
                          <div

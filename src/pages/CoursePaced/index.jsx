@@ -6,51 +6,53 @@ import CourseIcons from "components/CourseIcons";
 import { CoursesContext } from "context/coursesContext";
 
 const MaterialList = ({ course, module }) => {
-     return module.clases.map((clase, index) => {
-          const thumbnailPath = clase.thumbnails.split("/").slice(3);
-          const newPath = `https://ispeak-edtech.com/${thumbnailPath[0]}/${thumbnailPath[1]}`;
-          return (
-               <li key={clase.id}>
-                    <Link
-                         className="flex h-64 w-56 flex-col rounded-xl border border-gray-300 bg-white shadow-md"
-                         href={`/courses-paced/${course}/module/${module.id}/material/${clase.id}`}
-                    >
-                         <div className="relative overflow-hidden rounded-t-xl">
-                              <img
-                                   src={newPath}
-                                   alt={clase.nombre}
-                                   className={`h-36 object-cover ${
-                                        clase.completada ? "blur-sm" : "blur-none"
-                                   }`}
-                              />
-                              <div className="absolute left-0 top-0 z-10 h-full w-full bg-black opacity-10"></div>
-                              {clase.completada ? (
-                                   <>
-                                        <div className="bg-accent absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center rounded-full p-2">
-                                             <span className="text-primary mr-1 font-semibold">
-                                                  Complete
-                                             </span>
-                                             <CourseIcons name="check" />
-                                        </div>
-                                   </>
-                              ) : (
-                                   <></>
-                              )}
-                         </div>
-                         <div className="flex w-full justify-between overflow-hidden rounded-b-lg">
-                              <div className="flex  p-5 font-semibold">
-                                   <h3 className="font-Barlow text-primary font-semibold">
-                                        {clase.nombre}
-                                   </h3>
+     return module.clases
+          .sort((a, b) => (a.claseNumero > b.claseNumero ? 1 : -1))
+          .map((clase, index) => {
+               const thumbnailPath = clase.thumbnails.split("/").slice(3);
+               const newPath = `https://ispeak-edtech.com/${thumbnailPath[0]}/${thumbnailPath[1]}`;
+               return (
+                    <li key={clase.id}>
+                         <Link
+                              className="flex h-64 w-56 flex-col rounded-xl border border-gray-300 bg-white shadow-md"
+                              href={`/courses-paced/${course}/module/${module.id}/material/${clase.id}`}
+                         >
+                              <div className="relative overflow-hidden rounded-t-xl">
+                                   <img
+                                        src={newPath}
+                                        alt={clase.nombre}
+                                        className={`h-36 object-cover ${
+                                             clase.completada ? "blur-sm" : "blur-none"
+                                        }`}
+                                   />
+                                   <div className="absolute left-0 top-0 z-10 h-full w-full bg-black opacity-10"></div>
+                                   {clase.completada ? (
+                                        <>
+                                             <div className="bg-accent absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center rounded-full p-2">
+                                                  <span className="text-primary mr-1 font-semibold">
+                                                       Complete
+                                                  </span>
+                                                  <CourseIcons name="check" />
+                                             </div>
+                                        </>
+                                   ) : (
+                                        <></>
+                                   )}
                               </div>
-                              <div className=" text-primary flex h-28 items-center justify-center border-l border-gray-200 p-3 text-2xl font-semibold">
-                                   <span>{index + 1}</span>
+                              <div className="flex w-full justify-between overflow-hidden rounded-b-lg">
+                                   <div className="flex  p-5 font-semibold">
+                                        <h3 className="font-Barlow text-primary font-semibold">
+                                             {clase.nombre}
+                                        </h3>
+                                   </div>
+                                   <div className=" text-primary flex h-28 items-center justify-center border-l border-gray-200 p-3 text-2xl font-semibold">
+                                        <span>{clase.claseNumero}</span>
+                                   </div>
                               </div>
-                         </div>
-                    </Link>
-               </li>
-          );
-     });
+                         </Link>
+                    </li>
+               );
+          });
 };
 
 function AccordionItem({ course, module, index }) {
@@ -95,7 +97,7 @@ function Module({ course, modules = [] }) {
 export default function CoursePacedPage({ params }) {
      const id = params.courseId;
      // const [course, setCourse] = useState({});
-     const { courses } = useContext(CoursesContext) || {};
+     const { courses } = useContext(CoursesContext) || [];
      const course = courses.filter((course) => course.id === parseInt(id))[0];
 
      // useEffect(() => {

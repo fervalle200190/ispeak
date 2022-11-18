@@ -11,7 +11,7 @@ export const processAttendance = ({
      return {
           alumnoId: studentSelected,
           cursoId: courseSelected,
-          moduloId: moduloSelected,
+          moduloIds: moduloSelected,
           profesorId: profesorSelected,
           fecha: date,
           presente: presentSelected,

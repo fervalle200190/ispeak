@@ -11,40 +11,10 @@ import { postAttendance } from "services/postAttendance";
 import { USER_ID } from "services/settings";
 import { processAttendance } from "utils/processAttendance";
 
-export const initialClassOption = [
-     {
-          label: "Clase 1",
-          value: "1",
-     },
-     {
-          label: "Clase 2",
-          value: "2",
-     },
-     {
-          label: "Clase 3",
-          value: "3",
-     },
-     {
-          label: "Clase 4",
-          value: "4",
-     },
-     {
-          label: "Clase 5",
-          value: "5",
-     },
-     {
-          label: "Clase 6",
-          value: "6",
-     },
-     {
-          label: "Clase 7",
-          value: "7",
-     },
-     {
-          label: "Clase 8",
-          value: "8",
-     },
-];
+export const initialClassOption = [...Array(8)].map((a, i) => ({
+     label: `Clase ${i}`,
+     value: i + 1,
+}));
 
 const initialForm = {
      observaciones: "",
@@ -53,10 +23,10 @@ const initialForm = {
 
 const initialSelected = {
      profesorSelected: "",
-     moduloSelected: "",
+     moduloSelected: [],
      courseSelected: "",
      classSelected: "",
-     presentSelected: ''
+     presentSelected: "",
 };
 
 const initialList = {
@@ -164,7 +134,7 @@ export const AddAsistancesPage = () => {
                valueSelected.classSelected === "" ||
                valueSelected.courseSelected === "" ||
                valueSelected.moduloSelected === "" ||
-               valueSelected.presentSelected === '' ||
+               valueSelected.presentSelected === "" ||
                studentSelected === "" ||
                observaciones === "" ||
                date === ""
@@ -255,6 +225,7 @@ export const AddAsistancesPage = () => {
                                    options={selectsData.moduleList}
                                    label={"Modulo"}
                                    value={valueSelected.moduloSelected}
+                                   multiple={true}
                                    handleSelect={(e) => onValueSelected(e, "moduloSelected")}
                               />
                          </Grid>
