@@ -1,9 +1,9 @@
 import { ModalIcon } from "components/ModalIcon";
 import "../../styles/MemberModal.css";
 
-export const ModalPremium = () => {
+export const ModalPremium = ({ isModalOpen }) => {
      return (
-          <div className="member-modal-container">
+          <div className={`member-modal-container ${!isModalOpen ? "!hidden" : ""}`}>
                <div className="member-modal">
                     <div className="gray-head">Access denied</div>
                     <ModalIcon />
@@ -11,10 +11,12 @@ export const ModalPremium = () => {
                          <h2 className="main-modal-title">upgrade</h2>
                          <p className="subtitle-modal">your membership!</p>
                          <p className="modal-description">
-                              This is only available with the premium plan. Upgrade your membership and learn with a
-                              live instructor.
+                              This is only available with the standard membership. Upgrade your
+                              membership and learn with a live instructor.
                          </p>
-                         <button className="btn-modal">upgrade</button>
+                         <a href="https://ispeak.team/#planes" className="no-underline" target={'_blank'}>
+                              <button className="btn-modal">upgrade</button>
+                         </a>
                     </div>
                </div>
           </div>

@@ -1,5 +1,5 @@
 import { ModalPremium } from "components/ModalPremium";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "../../styles/Calendar.css";
 import { ModalSucceed } from "components/ModalSucceed";
@@ -16,10 +16,12 @@ import {
 } from "firebase/firestore";
 import firebaseApp, { firestore } from "../../firebase/credentials";
 import { USER_ID } from "services/settings";
+import { CoursesContext } from "context/coursesContext";
 
 let hours = ["8:00", "8:30", "9:00", "9:30", "10:00", "10:30"];
 
 const CalendarPage = () => {
+     const { userPlan } = useContext(CoursesContext);
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [professors, setProfessors] = useState([]);
      const [meetingSelected, setMeetingSelected] = useState("");
@@ -27,7 +29,7 @@ const CalendarPage = () => {
      const getData = async () => {
           const docRef = doc(firestore, "meetings", `${USER_ID}`);
           const res = await getDoc(docRef);
-          const meetings = res.data().meetingsToDo;
+          const meetings = res.data() ? res.data().meetingsToDo : false;
           if (!meetings) return;
           const meetingsNotBooked = [];
           for (const meeting in meetings) {
@@ -49,8 +51,11 @@ const CalendarPage = () => {
      };
 
      useEffect(() => {
+          if (userPlan.nombre === "Basic") {
+               return setIsModalOpen(true)
+          };
           getData();
-     }, []);
+     }, [userPlan]);
 
      return (
           <div className="calendar-container" style={{ paddingBottom: 60 }}>
@@ -59,6 +64,7 @@ const CalendarPage = () => {
                          Schedule your live <br className="br-calendar" /> class
                     </h1>
                </div>
+               <ModalPremium isModalOpen={isModalOpen} />
                <Grid sx={{ width: "95%" }}>
                     {professors.length <= 0 ? (
                          <>

@@ -23,7 +23,6 @@ export const BubblePage = ({ params, url }) => {
           if (module.length <= 0) return [];
           if (!course.modulos) return [];
           const newModules = course.modulos.filter((mod) => module.bubbleIds.includes(mod.id));
-          console.log(newModules)
           return newModules;
      }, [module, course]);
 

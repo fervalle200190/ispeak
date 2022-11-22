@@ -22,6 +22,7 @@ import { postMaterialCompleteAsync } from "services/postMaterialCompleteAsync";
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { firestore } from "../../firebase/credentials";
 import { USER_ID } from "services/settings";
+import { CoursesContext } from "context/coursesContext";
 
 function MaterialContentSection({ courseId, course, isActive = false }) {
      return isActive ? (
@@ -234,6 +235,7 @@ export default function MaterialPage({ params, community = true, url }) {
      const { secondBar, showBar, setShowBar, setSecondBar, handleSecondBar } =
           useContext(SizeContext);
      const { size } = useContext(SizeContext);
+     const { userPlan } = useContext(CoursesContext);
      const { courseId, moduleId, materialId, bubbleId } = params;
      const [course, setCourse] = useState({});
      const [isModalOpen, setIsModalOpen] = useState(false);
@@ -255,6 +257,7 @@ export default function MaterialPage({ params, community = true, url }) {
      };
 
      const checkPercentage = async () => {
+          if(userPlan.nombre === 'Basic') return
           const docRef = query(collection(firestore, 'professors'))
           const docs = await getDocs(docRef)
           const professorsData = []

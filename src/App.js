@@ -42,6 +42,9 @@ import { getAllCoursesAsync } from "services/getAllCoursesAsync";
 import { BubblecommunityPage } from "pages/BubbleCommunity";
 import CoursePacedPage from "pages/CoursePaced";
 import { ManualRegisterPage } from "pages/ManualRegister";
+import getUser from "services/getUser";
+import { getPlans } from "services/getPlans";
+import { getUserAsync } from "services/getUserAsync";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -91,7 +94,10 @@ const RenderProfessorView = () => {
                               </Route>
                               <Route path="/course-community/bubble/:courseId/:moduleId">
                                    {(params) => (
-                                        <BubblecommunityPage params={params} url={"course-community"} />
+                                        <BubblecommunityPage
+                                             params={params}
+                                             url={"course-community"}
+                                        />
                                    )}
                               </Route>
                               <Route path="/course-community/:courseId/module/:moduleId/material/:materialId/:bubbleId">
@@ -119,17 +125,26 @@ const RenderProfessorView = () => {
 const RenderStudentView = () => {
      const USER = JSON.parse(window.localStorage.getItem("loggedAppUser"));
      const [courses, setCourses] = useState([]);
+     const [userPlan, setUserPlan] = useState('')
      const { showBar } = useContext(SizeContext);
+
+     const getInfo = async () => {
+          const [user, plans] = await Promise.all([getUserAsync(), getPlans()]);
+          const userSelected = plans.find((plan)=> plan.id === user.plan);
+          if(!userSelected) return
+          setUserPlan(userSelected)
+     };
 
      useEffect(() => {
           getAllCoursesByUser(USER.id).then((response) => {
                setCourses(response);
           });
+          getInfo();
      }, [USER.id]);
 
      return (
           <>
-               <CoursesContext.Provider value={{ courses }}>
+               <CoursesContext.Provider value={{ courses, userPlan }}>
                     <div
                          className={`App tranisition-all flex flex-col items-center ${
                               showBar ? "md:ml-60" : "md:ml-10"
