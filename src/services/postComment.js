@@ -1,7 +1,7 @@
-import { API_URL, USER_ID } from "./settings";
+import { API_KEY, API_URL, USER_ID } from "./settings";
 
 export default function postComment({ comment }) {
-  const URL = `${API_URL}/Comentarios/Create/${USER_ID}`;
+  const URL = `${API_URL}/Comentarios/Create/${API_KEY}/${USER_ID}`;
   fetch(URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -99,8 +99,8 @@ export const AddAsistancesPage = () => {
 
      const getData = async () => {
           const { users } = await getAllUsersAsync();
-          const professors = users.filter((user) => user.rol === "Profesor");
-          const students = users.filter((user) => user.rol === "Alumno");
+          const professors = users.filter(({user}) => user.rol === "Profesor").map(({user})=> user)
+          const students = users.filter(({user}) => user.rol === "Alumno").map(({user})=> user)
           const professorsParsed = professors.map((prof) => ({
                label: prof.nombre,
                value: prof.id,
