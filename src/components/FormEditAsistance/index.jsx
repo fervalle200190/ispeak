@@ -6,10 +6,11 @@ import { useForm } from "hooks/useForm";
 import { useContext, useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import { getAllUsersAsync } from "services/getAllUsersAsync";
+import { getAttendanceById } from "services/getAttendanceById";
 import { getModuleByCourseIdAsync } from "services/getModuleByCourseIdAsync";
-import { postAttendance } from "services/postAttendance";
+import { processAttendanceToUpdate } from "services/processAttendanceToUpdate";
 import { USER_ID } from "services/settings";
-import { processAttendance } from "utils/processAttendance";
+import { updateAttendance } from "services/updateAttendance";
 
 export const initialClassOption = [...Array(8)].map((a, i) => ({
      label: `Clase ${i + 1}`,
@@ -23,7 +24,7 @@ const initialForm = {
 
 const initialSelected = {
      profesorSelected: "",
-     moduloSelected: [],
+     moduloSelected: "",
      courseSelected: "",
      classSelected: "",
      presentSelected: "",
@@ -64,13 +65,15 @@ const customSelectStyles = {
      }),
 };
 
-export const AddAsistancesPage = () => {
-     const { date, observaciones, onInputChange, onResetForm } = useForm(initialForm);
+export const FormEditAsistance = ({ modalInfo, closeModal }) => {
+     const { date, observaciones, onInputChange, formState, onResetForm, setFormState } =
+          useForm(initialForm);
      const { courses } = useContext(CoursesContext) || [];
      const [valueSelected, setValueSelected] = useState(initialSelected);
      const [snackBarInfo, setSnackBarInfo] = useState(initialSnackBar);
      const [selectsData, setSelectsData] = useState(initialList);
-     const [studentSelected, setStudentSelected] = useState("");
+     const [originalAttend, setOriginalAttend] = useState({});
+     const [studentSelected, setStudentSelected] = useState({ label: "", value: "" });
 
      const onStudentSelect = (e) => {
           setStudentSelected(e);
@@ -132,27 +135,64 @@ export const AddAsistancesPage = () => {
           });
      };
 
+     useEffect(() => {
+          if (valueSelected.courseSelected.length <= 0) return;
+          getModules(valueSelected.courseSelected);
+     }, [valueSelected.courseSelected]);
+
+     const getRawAttend = async (id) => {
+          const { data } = await getAttendanceById(id);
+          setOriginalAttend(data);
+          setFormState({
+               ...formState,
+               observaciones: data.observaciones,
+               date: data.fecha.slice(0, -9),
+          });
+          setStudentSelected(
+               selectsData.studentsList.find((student) => student.value === data.alumnoId)
+          );
+          setValueSelected({
+               courseSelected: data.cursoId,
+               profesorSelected: data.profesorId,
+               moduloSelected: data.moduloId,
+               classSelected: data.clase,
+               presentSelected: data.presente,
+          });
+     };
+
+     useEffect(() => {
+          getData();
+     }, []);
+
+     useEffect(() => {
+          if (!modalInfo.id) return;
+          if (selectsData.studentsList.length <= 0 || selectsData.professorsList.length <= 0)
+               return;
+          getRawAttend(modalInfo.id);
+     }, [modalInfo, selectsData]);
+
      const onSubmit = async (e) => {
           e.preventDefault();
           if (
-               valueSelected.classSelected === "" ||
-               valueSelected.courseSelected === "" ||
-               valueSelected.moduloSelected === "" ||
-               valueSelected.presentSelected === "" ||
-               studentSelected === "" ||
-               observaciones === "" ||
-               date === ""
+               valueSelected.classSelected === originalAttend.clase &&
+               valueSelected.courseSelected === originalAttend.cursoId &&
+               valueSelected.moduloSelected === originalAttend.moduloId &&
+               valueSelected.profesorSelected === originalAttend.profesorId &&
+               studentSelected.value === originalAttend.alumnoId &&
+               valueSelected.presentSelected === originalAttend.presente &&
+               observaciones === originalAttend.observaciones &&
+               date === originalAttend.fecha.slice(0, -9)
           ) {
-               setSnackBarInfo({ ...errorSnackbar, message: "Por favor completa los datos" });
+               setSnackBarInfo({ ...errorSnackbar, message: "Por favor cambia algun datos" });
                return;
           }
-          const res = await postAttendance(
-               processAttendance({
+          const res = await updateAttendance(
+               processAttendanceToUpdate({
+                    ...originalAttend,
                     ...valueSelected,
                     studentSelected: studentSelected.value,
-                    profesorSelected: USER_ID,
-                    observaciones,
-                    date,
+                    ...formState,
+                    date: new Date(date).toISOString(),
                })
           );
           if (!res.ok) {
@@ -162,29 +202,16 @@ export const AddAsistancesPage = () => {
           setSnackBarInfo({
                ...initialSnackBar,
                isSnackBarOpen: true,
-               message: "Asistencia creada exitosamente!!!",
+               message: "Asistencia editada exitosamente!!!",
           });
-          onResetForm();
-          setValueSelected(initialSelected);
-          setStudentSelected("");
      };
 
-     useEffect(() => {
-          if (valueSelected.courseSelected.length <= 0) return;
-          getModules(valueSelected.courseSelected);
-     }, [valueSelected.courseSelected]);
-
-     useEffect(() => {
-          getData();
-     }, []);
-
      return (
-          <div className="w-full p-5">
+          <>
                <Box
                     component={"form"}
                     width={"100%"}
-                    maxWidth={500}
-                    sx={{ pb: 10 }}
+                    sx={{ p: 5, overflowY: "auto", height: "400px" }}
                     onSubmit={onSubmit}
                >
                     <Grid container>
@@ -229,7 +256,6 @@ export const AddAsistancesPage = () => {
                                    options={selectsData.moduleList}
                                    label={"Modulo"}
                                    value={valueSelected.moduloSelected}
-                                   multiple={true}
                                    handleSelect={(e) => onValueSelected(e, "moduloSelected")}
                               />
                          </Grid>
@@ -266,13 +292,27 @@ export const AddAsistancesPage = () => {
                               />
                          </Grid>
                          <Grid item xs={12} sx={{ m: 1 }}>
-                              <Button variant="outlined" size={"large"} type="submit">
+                              <Button
+                                   variant="outlined"
+                                   size={"large"}
+                                   type="submit"
+                                   sx={{ mr: 2 }}
+                              >
                                    Guardar
+                              </Button>
+                              <Button
+                                   variant="contained"
+                                   color="error"
+                                   size={"large"}
+                                   type="submit"
+                                   onClick={closeModal}
+                              >
+                                   Cancelar
                               </Button>
                          </Grid>
                     </Grid>
                </Box>
                <SnackBarActions handleSnackbar={closeSnackbar} {...snackBarInfo} />
-          </div>
+          </>
      );
 };

@@ -5,24 +5,17 @@ import "./styles.css";
 import CourseIcons from "components/CourseIcons";
 import { CoursesContext } from "context/coursesContext";
 
-const MaterialList = ({ course, module }) => {
-     return module.clases
+const MaterialList = ({ course, module, thumbnails }) => {
+     return module.materialEstudios
           .sort((a, b) => (a.claseNumero > b.claseNumero ? 1 : -1))
           .map((clase, index) => {
                return (
                     <li key={clase.id}>
                          <Link
                               className="flex h-64 w-56 flex-col rounded-xl border border-gray-300 bg-white shadow-md"
-                              href={`/courses-paced/${course}/module/${module.id}/material/${clase.id}`}
+                              href={`/courses-community-no/${course}/module/${module.id}/material/${clase.id}`}
                          >
                               <div className="relative overflow-hidden rounded-t-xl">
-                                   <img
-                                        src={clase.thumbnails}
-                                        alt={clase.nombre}
-                                        className={`h-36 object-cover ${
-                                             clase.completada ? "blur-sm" : "blur-none"
-                                        }`}
-                                   />
                                    <div className="absolute left-0 top-0 z-10 h-full w-full bg-black opacity-10"></div>
                                    {clase.completada ? (
                                         <>
@@ -92,7 +85,7 @@ function Module({ course, modules = [] }) {
      ));
 }
 
-export default function CoursePacedPage({ params }) {
+export default function CourseCommunityList({ params }) {
      const id = params.courseId;
      // const [course, setCourse] = useState({});
      const { courses } = useContext(CoursesContext) || [];
@@ -116,7 +109,7 @@ export default function CoursePacedPage({ params }) {
                               {course.nombre}
                          </h1>
                          <ol className="accordion flex flex-col gap-3 p-5">
-                              {<Module course={course.id} modules={course.modulos} />}
+                              {<Module course={course.id} modules={course.getmodulos} />}
                          </ol>
                     </>
                ) : (

@@ -35,7 +35,7 @@ export const ProfessorCard = ({ professors, meetingId, meetingSelected, setMeeti
                     onClick={onClickSchedule}
                     sx={{
                          boxShadow: "0px 0px 10px #cfcfcf",
-                         borderRadius: "7px",
+                         borderRadius: "14px",
                          p: 2,
                          cursor: "pointer",
                          ":hover": { boxShadow: "0px 0px 20px #bfbfbf" },

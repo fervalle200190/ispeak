@@ -45,6 +45,7 @@ import { ManualRegisterPage } from "pages/ManualRegister";
 import getUser from "services/getUser";
 import { getPlans } from "services/getPlans";
 import { getUserAsync } from "services/getUserAsync";
+import CourseCommunityList from "pages/CourseCommunityList";
 
 const RenderProfessorView = () => {
      const user = JSON.parse(window.localStorage.getItem("loggedAppUser"));
@@ -92,6 +93,22 @@ const RenderProfessorView = () => {
                                         <CoursePage url={"course-community"} params={params} />
                                    )}
                               </Route>
+                              <Route path="/courses-community-no/:courseId">
+                                   {(params) => (
+                                        <CourseCommunityList
+                                             url="courses-community-no"
+                                             params={params}
+                                        />
+                                   )}
+                              </Route>
+                              <Route path="/courses-community-no/:courseId/module/:moduleId/material/:materialId">
+                                   {(params) => (
+                                        <MaterialPage
+                                             url={"courses-community-no"}
+                                             params={params}
+                                        />
+                                   )}
+                              </Route>
                               <Route path="/course-community/bubble/:courseId/:moduleId">
                                    {(params) => (
                                         <BubblecommunityPage
@@ -125,14 +142,14 @@ const RenderProfessorView = () => {
 const RenderStudentView = () => {
      const USER = JSON.parse(window.localStorage.getItem("loggedAppUser"));
      const [courses, setCourses] = useState([]);
-     const [userPlan, setUserPlan] = useState('')
+     const [userPlan, setUserPlan] = useState("");
      const { showBar } = useContext(SizeContext);
 
      const getInfo = async () => {
           const [user, plans] = await Promise.all([getUserAsync(), getPlans()]);
-          const userSelected = plans.find((plan)=> plan.id === user.plan);
-          if(!userSelected) return
-          setUserPlan(userSelected)
+          const userSelected = plans.find((plan) => plan.id === user.plan);
+          if (!userSelected) return;
+          setUserPlan(userSelected);
      };
 
      useEffect(() => {

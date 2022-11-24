@@ -1,3 +1,5 @@
+import { KeyboardArrowDownRounded } from "@material-ui/icons";
+
 const { Grid, Button, Typography } = require("@mui/material");
 
 export const MeetingList = ({ meetingId }) => {
@@ -9,9 +11,10 @@ export const MeetingList = ({ meetingId }) => {
                     </Typography>
                </Grid>
                <Grid item>
-                    <Button variant="contained" sx={{ backgroundColor: "#0d2e68" }}>
+                    <button className="professors-buttons">
                          Schedule
-                    </Button>
+                         <KeyboardArrowDownRounded />
+                    </button>
                </Grid>
           </>
      );

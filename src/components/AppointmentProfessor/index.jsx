@@ -70,9 +70,9 @@ export const AppointmentProfessor = ({ linkSelected, onClickButton, meetingId, o
                          onClick={onClickYesButton}
                          disabled={isLoading}
                          sx={{
-                              backgroundColor: "#5df99c",
+                              backgroundColor: "#2c96fb",
                               ml: 2,
-                              color: "#1e3a8a",
+                              color: "#fff",
                               ":hover": { backgroundColor: "#4bd88b" },
                          }}
                     >
