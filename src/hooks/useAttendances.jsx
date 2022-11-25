@@ -53,5 +53,6 @@ export const useAttendances = () => {
 
      return {
           attendances,
+          getData
      };
 };

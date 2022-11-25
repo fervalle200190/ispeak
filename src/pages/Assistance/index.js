@@ -8,7 +8,7 @@ import { EditAsistanceModal } from "components/EditAsistanceModal";
 const initialModal = { isModalOpen: false, modalData: {} };
 
 export default function AssistancePage() {
-     const { attendances } = useAttendances();
+     const { attendances, getData } = useAttendances();
      const [modalInfo, setModalInfo] = useState(initialModal);
 
      const openModal = ({ id }) => {
@@ -27,7 +27,7 @@ export default function AssistancePage() {
                <div className="flex w-full flex-col gap-5 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                     <div className="flex justify-between">
                          <h1 className="text-primary text-xl font-semibold">
-                              Assistances<span className="text-accent">.</span>
+                              Attendance<span className="text-accent">.</span>
                          </h1>
                          <Link to="assistance/ingresar">
                               <Button variant="contained" sx={{ backgroundColor: "#1e3a8a" }}>
@@ -45,6 +45,7 @@ export default function AssistancePage() {
                     <EditAsistanceModal
                          {...modalInfo}
                          closeModal={closeModal}
+                         getData={getData}
                     />
                </div>
           </div>

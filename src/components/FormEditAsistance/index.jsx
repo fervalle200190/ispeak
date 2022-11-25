@@ -65,7 +65,7 @@ const customSelectStyles = {
      }),
 };
 
-export const FormEditAsistance = ({ modalInfo, closeModal }) => {
+export const FormEditAsistance = ({ modalInfo, closeModal, getData: getAsistances }) => {
      const { date, observaciones, onInputChange, formState, onResetForm, setFormState } =
           useForm(initialForm);
      const { courses } = useContext(CoursesContext) || [];
@@ -204,6 +204,7 @@ export const FormEditAsistance = ({ modalInfo, closeModal }) => {
                isSnackBarOpen: true,
                message: "Asistencia editada exitosamente!!!",
           });
+          getAsistances()
      };
 
      return (

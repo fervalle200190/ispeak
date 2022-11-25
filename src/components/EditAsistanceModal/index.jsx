@@ -1,7 +1,7 @@
 import { Box, Grid, Modal } from "@mui/material";
 import { FormEditAsistance } from "components/FormEditAsistance";
 
-export const EditAsistanceModal = ({ isModalOpen, modalData, closeModal }) => {
+export const EditAsistanceModal = ({ isModalOpen, modalData, closeModal, getData }) => {
      return (
           <Modal open={isModalOpen} onClose={closeModal}>
                <Grid
@@ -17,7 +17,7 @@ export const EditAsistanceModal = ({ isModalOpen, modalData, closeModal }) => {
                               borderRadius: "5px",
                          }}
                     >
-                         <FormEditAsistance modalInfo={modalData} closeModal={closeModal} />
+                         <FormEditAsistance modalInfo={modalData} closeModal={closeModal} getData={getData} />
                     </Box>
                </Grid>
           </Modal>
