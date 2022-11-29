@@ -70,7 +70,7 @@ const NAV_ITEMS = {
     },
     {
       id: 3,
-      title: "Assistance",
+      title: "Attendance",
       icon: <SideNavIcons name="assistance" />,
       url: "/assistance",
     },
