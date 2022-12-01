@@ -23,7 +23,11 @@ export const BubblePage = ({ params, url }) => {
           if (module.length <= 0) return [];
           if (!course.modulos) return [];
           const newModules = course.modulos.filter((mod) => module.bubbleIds.includes(mod.id));
-          return newModules;
+          const res = newModules.map((mod) => ({
+               ...mod,
+               clases: mod.clases.sort((a, b) => (a.claseNumero > b.claseNumero ? 1 : -1)),
+          }));
+          return res;
      }, [module, course]);
 
      const getData = async () => {
