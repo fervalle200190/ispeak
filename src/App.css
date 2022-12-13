@@ -177,3 +177,52 @@ body {
 .professors-buttons:hover {
      background-color: #eee;
 }
+
+.mini-bubble-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+}
+
+.circle-title {
+     font-size: 29.33px;
+     color: #fff;
+     font-weight: 700;
+     font-family: 'Poppins';
+}
+
+.inner-bubble-circle {
+     border-radius: 50%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     position: relative;
+     min-width: 70px;
+}
+
+.inner-bubble-circle::after {
+     content: '';
+     display: block;
+     padding-bottom: 100%;
+}
+
+.mini-bubble-icon {
+     position: absolute;
+     top: -7px;
+     right: -7px;
+     background: #fff;
+     border-radius: 50%;
+     height: 30px;
+     width: 30px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.267);
+}
+
+.mini-bubble-title {
+     font-size: 12px;
+     font-weight: 700;
+     margin-top: -7px;
+}
