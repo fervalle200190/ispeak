@@ -13,6 +13,7 @@ import FirstIcon from "../../assets/circle1.svg";
 import SecondIcon from "../../assets/circle2.svg";
 import ThirdIcon from "../../assets/circle3.svg";
 import FourthIcon from "../../assets/circle4.svg";
+import getCoursesByProfessor from "services/getCoursesByProfessorId";
 
 const RenderProfessor = () => {
      const [courses, setCourses] = useState(0);
@@ -27,6 +28,7 @@ const RenderProfessor = () => {
      useEffect(() => {
           getAllCourses().then((res) => setCourses(res.length));
           getStatisticsLevel().then((res) => setLevels(res.levelStatistics));
+          getCoursesByProfessor().then((res)=> console.log(res))
      }, []);
      const user = JSON.parse(localStorage.getItem("loggedAppUser"));
      const username = user.nombre.split(" ").slice(0, 1);
@@ -38,9 +40,6 @@ const RenderProfessor = () => {
                               Welcome back, {username}
                               <span className="text-accent">.</span>
                          </span>
-                         <button className="bg-accent text-primary w-40 rounded-md p-1 text-sm font-semibold">
-                              Create your course
-                         </button>
                     </div>
                </div>
                <div className="grid grid-cols-2 gap-5">
